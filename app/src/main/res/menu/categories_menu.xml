@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/add_category"
+        android:id="@+id/add_category"/>
+    <item android:title="@string/switch_to_tasks"
+        android:id="@+id/show_tasks"
+        android:icon="@drawable/ic_tasks"
+        app:showAsAction="ifRoom|withText"/>
+</menu>

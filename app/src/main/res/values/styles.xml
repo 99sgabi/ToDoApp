@@ -1,0 +1,58 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimaryPinkAesthetic</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkPinkAesthetic</item>
+        <item name="colorAccent">@color/colorAccentPinkAesthetic</item>
+    </style>
+
+    <style name="PriorityTextView">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/priorityTextSize</item>
+    </style>
+
+    <style name="InformativeTextView">
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/InformativeTextSize</item>
+        <item name="android:background">@color/colorPrimaryDarkPinkAesthetic</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/colorText</item>
+        <item name="android:padding">@dimen/InformativeTextPadding</item>
+    </style>
+
+    <style name="DateTextViewStyle">
+        <item name="android:textColor">@color/colorText</item>
+        <item name="android:background">@color/colorAccentPinkAesthetic</item>
+        <item name="android:textSize">@dimen/DateTextSize</item>
+        <item name="android:padding">@dimen/DateTextPadding</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="RadioBoxStyle">
+        <item name="android:textColor">@color/colorText</item>
+        <item name="android:background">@color/colorAccentPinkAesthetic</item>
+        <item name="android:textSize">@dimen/DateTextSize</item>
+        <item name="android:padding">@dimen/DateTextPadding</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="ChronometerStyle">
+        <item name="android:textColor">@color/colorText</item>
+        <item name="android:textSize">@dimen/ChronometerSize</item>
+        <item name="android:background">@color/colorAccentPinkAesthetic</item>
+    </style>
+
+    <style name="ButtonsStyle">
+        <item name="android:background">@color/colorPrimaryDarkPinkAesthetic</item>
+        <item name="android:textColor">@color/buttonBackground</item>
+    </style>
+
+    <style name="CategoryName">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/CategoryNameSize</item>
+        <item name="android:textColor">@color/colorText</item>
+    </style>
+
+</resources>

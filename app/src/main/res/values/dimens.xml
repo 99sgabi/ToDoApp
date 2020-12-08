@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="priorityTextSize">10dp</dimen>
+    <dimen name="InformativeTextSize">19dp</dimen>
+    <dimen name="InformativeTextPadding">10dp</dimen>
+    <dimen name="DateTextSize">17dp</dimen>
+    <dimen name="DateTextPadding">3dp</dimen>
+    <dimen name="lineHeight">2dp</dimen>
+    <dimen name="ChronometerSize">25dp</dimen>
+    <dimen name="CategoryNameSize">20dp</dimen>
+</resources>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_item_search"
+        android:title="@string/search_bar"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="ifRoom"/>
+    <item android:title="@string/clear_search"
+        android:id="@+id/clear_search"
+        app:showAsAction="ifRoom"/>
+    <item android:title="@string/add_task_option"
+        android:id="@+id/add_option"
+        app:showAsAction="ifRoom"/>
+    <item android:title="@string/switch_to_categories"
+        android:id="@+id/switch_to_categories"
+        android:icon="@drawable/ic_categories"
+        app:showAsAction="ifRoom"/>
+    <item android:title="sort"
+        android:id="@+id/sort_option"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_sort"/>
+
+</menu>

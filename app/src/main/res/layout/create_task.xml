@@ -87,6 +87,11 @@
         android:gravity="start|top"
         android:inputType="textMultiLine" />
 
+    <Spinner
+        android:id="@+id/category_choice_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <Button
     android:id="@+id/create_task_button"
     android:layout_width="match_parent"

@@ -43,4 +43,5 @@
     <string name="delete_category_title">Delete Category</string>
     <string name="switch_to_tasks">Show tasks</string>
     <string name="add_category">Add category</string>
+    <string name="category_choice_field_hint">Choose Category</string>
 </resources>

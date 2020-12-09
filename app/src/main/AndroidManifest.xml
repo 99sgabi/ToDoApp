@@ -9,7 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CategoryListActivity"></activity>
+
+        <receiver
+            android:name=".BroadcastManager"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".CategoryListActivity" />
         <activity android:name=".CreateCategoryActvity" />
         <activity android:name=".CreateTaskActivity" />
         <activity android:name=".TaskDetailsActivity" />

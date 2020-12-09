@@ -39,4 +39,9 @@ public class Category {
     {
         this.shortDescription = shortDescription;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

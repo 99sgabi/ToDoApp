@@ -13,7 +13,7 @@ public class CategoryListActivity extends SingleFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         startUp();
-    }//tHIS IS A FUCKING TEST PLEASE WORK
+    }
 
     @Override
     protected Fragment createFragment() {

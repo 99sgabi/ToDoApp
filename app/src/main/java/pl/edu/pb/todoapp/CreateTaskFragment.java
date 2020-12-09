@@ -9,10 +9,15 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CursorAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -20,6 +25,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -35,8 +41,13 @@ public class CreateTaskFragment extends Fragment {
     private DatePickerDialog datePicker;
     private TimePickerDialog timePicker;
     private TaskViewModel taskViewModel;
+    private CategoryViewModel categoryViewModel;
     private Task currentTask;
     private TextView header;
+    private Spinner categorySpinner;
+    private ArrayList<Integer> categoryIdList;
+    private List<Category> categoryNameList;
+    private Integer selectedCategoryId = null;
     public static final String KEY_ADDED_SUCCESSFULLY = "was added successfully?";
 
     private String timeIntoString(int hourOfDay, int minute)
@@ -107,6 +118,10 @@ public class CreateTaskFragment extends Fragment {
 
         task.setPriority(taskPriority);
 
+        Category category = (Category)categorySpinner.getSelectedItem();
+        if(category != null)
+            task.setCategoryId(category.getId());
+
         int day = Integer.parseInt(date.substring(0,2));
         int month = Integer.parseInt(date.substring(3,5)) - 1;
         int year = Integer.parseInt(date.substring(6,10)) - 1900;
@@ -139,10 +154,29 @@ public class CreateTaskFragment extends Fragment {
         }
     }
 
+    private void setUpAdapter()
+    {
+        ArrayAdapter<Category> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, categoryNameList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categorySpinner.setAdapter(adapter);
+
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        categoryIdList = new ArrayList<>();
+        //categoryNameList = new ArrayList<>();
         taskViewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
         Intent startngIntent = getActivity().getIntent();
         final int id = startngIntent.getIntExtra(TaskListFragment.KEY_EXTRA_TASK_ID, -1);
@@ -154,6 +188,17 @@ public class CreateTaskFragment extends Fragment {
                 setFields();
             }
         });
+
+        categoryViewModel = ViewModelProviders.of(this).get(CategoryViewModel.class);
+        categoryViewModel.findAllCategories().observe(this, new Observer<List<Category>>() {
+            @Override
+            public void onChanged(List<Category> categories) {
+                categoryNameList = (ArrayList<Category>) categories;
+                if(categorySpinner.getAdapter() == null)
+                    setUpAdapter();
+            }
+        });
+
     }
 
     @Override
@@ -168,6 +213,7 @@ public class CreateTaskFragment extends Fragment {
         taskDescriptionBox = view.findViewById(R.id.task_description_box);
         taskPriorityButton = view.findViewById(R.id.task_priority_group);
         header = view.findViewById(R.id.create_task_header);
+        categorySpinner = view.findViewById(R.id.category_choice_spinner);
 
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override

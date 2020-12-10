@@ -183,7 +183,6 @@ public class CreateTaskFragment extends Fragment {
         taskViewModel.findTaskById(id).observe(this, new Observer<Task>() {
             @Override
             public void onChanged(Task task) {
-                //TODO: naprawić to
                 currentTask = task;
                 setFields();
             }

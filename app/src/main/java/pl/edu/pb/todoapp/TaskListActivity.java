@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -36,7 +37,7 @@ public class TaskListActivity extends SingleFragmentActivity {
             @Override
             public void onResponse(Call<List<ClosesedCity>> call, Response<List<ClosesedCity>> response) {
                 closesedCity = response.body().get(0);
-                messageBox.setText(closesedCity.city);
+                showMessage();
             }
 
             @Override
@@ -46,9 +47,66 @@ public class TaskListActivity extends SingleFragmentActivity {
         });
     }
 
+    private void generateMessage(List<Weather> weatherList)
+    {
+        ArrayList<String> category_unmotivated = new ArrayList<String>();
+        ArrayList<String> category_motivated = new ArrayList<String>();
+        ArrayList<String> category_lightly_motivated = new ArrayList<String>();
+        category_unmotivated.add("sl");
+        category_unmotivated.add("h");
+        category_unmotivated.add("t");
+        category_lightly_motivated.add("hr");
+        category_lightly_motivated.add("lr");
+        category_lightly_motivated.add("s");
+        category_motivated.add("lc");
+        category_motivated.add("sn");
+        category_motivated.add("c");
+
+        int categoryUnmotivatedCount = 0;
+        int categoryMotivatedCount = 0;
+        int categoryLightlymotivatedCount = 0;
+
+        for(Weather weather: weatherList)
+        {
+            if(category_motivated.contains(weather.weatherState))
+            {
+                categoryUnmotivatedCount++;
+            }
+            else if(category_unmotivated.contains(weather.weatherState))
+            {
+                categoryMotivatedCount++;
+            }
+            else
+            {
+                categoryLightlymotivatedCount++;
+            }
+        }
+
+        int maxValue = Math.max(Math.max(categoryLightlymotivatedCount,categoryMotivatedCount),categoryUnmotivatedCount);
+        if(categoryLightlymotivatedCount == maxValue)
+            messageBox.setText(getString(R.string.lightly_motivated_message));
+        else if(categoryMotivatedCount == maxValue)
+            messageBox.setText(getString(R.string.motivated_message));
+        else
+            messageBox.setText(getString(R.string.unmotivated_message));
+    }
+
     private void showMessage()
     {
+        WeatherService weatherService = WeatherApiInstance.getInstance().create(WeatherService.class);
+        Call<WeatherList> weatherApiCall = weatherService.findWeather(closesedCity.woeid);
 
+        weatherApiCall.enqueue(new Callback<WeatherList>() {
+            @Override
+            public void onResponse(Call<WeatherList> call, Response<WeatherList> response) {
+                generateMessage(response.body().weatherList);
+            }
+
+            @Override
+            public void onFailure(Call<WeatherList> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override

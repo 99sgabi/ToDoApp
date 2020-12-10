@@ -44,4 +44,7 @@
     <string name="switch_to_tasks">Show tasks</string>
     <string name="add_category">Add category</string>
     <string name="category_choice_field_hint">Choose Category</string>
+    <string name="motivated_message">It is possible that today you will complete all of the tasks!</string>
+    <string name="unmotivated_message">You need to motivate yourself today a little bit more than usually!</string>
+    <string name="lightly_motivated_message">Stay motivated, never give up!</string>
 </resources>

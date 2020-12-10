@@ -12,5 +12,5 @@ public interface WeatherService {
     Call<List<ClosesedCity>> findClosesedCities(@Query("lattlong") String query);
 
     @GET("location/{woeid}")
-    Call<List<Weather>> findWeather(@Path("woeid") long woeid);
+    Call<WeatherList> findWeather(@Path("woeid") long woeid);
 }

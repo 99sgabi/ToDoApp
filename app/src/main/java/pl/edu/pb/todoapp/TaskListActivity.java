@@ -55,6 +55,7 @@ public class TaskListActivity extends SingleFragmentActivity {
         category_unmotivated.add("sl");
         category_unmotivated.add("h");
         category_unmotivated.add("t");
+        category_unmotivated.add("hc");
         category_lightly_motivated.add("hr");
         category_lightly_motivated.add("lr");
         category_lightly_motivated.add("s");
@@ -70,11 +71,11 @@ public class TaskListActivity extends SingleFragmentActivity {
         {
             if(category_motivated.contains(weather.weatherState))
             {
-                categoryUnmotivatedCount++;
+                categoryMotivatedCount++;
             }
             else if(category_unmotivated.contains(weather.weatherState))
             {
-                categoryMotivatedCount++;
+                categoryUnmotivatedCount++;
             }
             else
             {

@@ -24,6 +24,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -37,6 +38,7 @@ public class TaskListFragment extends Fragment {
     public static String KEY_EXTRA_TASK_ID = "extraID";
     public static String KEY_TASK = "extraID";
     private TaskViewModel taskViewModel;
+    private FloatingActionButton addButton;
     private LifecycleOwner lifecycleOwner = this;
     //public static final int REQUEST_CODE_TASK_DETAILS = 1;
     public static final int REQUEST_CODE_TASK_CREATE = 2;
@@ -63,6 +65,14 @@ public class TaskListFragment extends Fragment {
         View view = inflater.inflate(R.layout.rv_list, container,false);
         recyclerView = view.findViewById(R.id.task_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        addButton = view.findViewById(R.id.floating_add_button);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), CreateTaskActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_TASK_CREATE);
+            }
+        });
 
         updateView();
         return view;
@@ -79,7 +89,7 @@ public class TaskListFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 //TODO: ZAPYTAC O TEN LIFCYCLE I DLACZEGO TAKSIE TO ROBI DZIWNIE 
-                taskViewModel.findTasks(query).observe(lifecycleOwner, new Observer<List<Task>>() {
+                taskViewModel.findTasksWithCategories(query).observe(lifecycleOwner, new Observer<List<Task>>() {
                     @Override
                     public void onChanged(List<Task> tasks) {
                         adapter.setTasks(tasks);
@@ -99,10 +109,6 @@ public class TaskListFragment extends Fragment {
     public boolean onOptionsItemSelected(@androidx.annotation.NonNull MenuItem item) {
         switch(item.getItemId())
         {
-            case R.id.add_option:
-                Intent intent = new Intent(getActivity(), CreateTaskActivity.class);
-                startActivityForResult(intent, REQUEST_CODE_TASK_CREATE);
-                return true;
             case R.id.switch_to_categories:
                 Intent categoryIntent = new Intent(getActivity(), CategoryListActivity.class);
                 startActivity(categoryIntent);
@@ -138,24 +144,24 @@ public class TaskListFragment extends Fragment {
         if(requestCode == TaskListFragment.REQUEST_CODE_TASK_CREATE)
         {
             if(resultCode == Activity.RESULT_OK) {
-                Snackbar.make(getActivity().findViewById(R.id.fragment_container),
+                Snackbar.make(getActivity().findViewById(R.id.coordinator_layout),
                         getString(R.string.task_created),
                         Snackbar.LENGTH_LONG).show();
             }
             else
-                Snackbar.make(getActivity().findViewById(R.id.fragment_container),
+                Snackbar.make(getActivity().findViewById(R.id.coordinator_layout),
                         getString(R.string.empty_task_cancelled),
                         Snackbar.LENGTH_LONG).show();
         }
         else if(requestCode == TaskListFragment.REQUEST_CODE_TASK_EDIT)
         {
             if(resultCode == Activity.RESULT_OK) {
-                Snackbar.make(getActivity().findViewById(R.id.fragment_container),
+                Snackbar.make(getActivity().findViewById(R.id.coordinator_layout),
                         getString(R.string.task_edit_was_successful),
                         Snackbar.LENGTH_LONG).show();
             }
             else
-                Snackbar.make(getActivity().findViewById(R.id.fragment_container),
+                Snackbar.make(getActivity().findViewById(R.id.coordinator_layout),
                         getString(R.string.task_edit_was_unsuccessful),
                         Snackbar.LENGTH_LONG).show();
         }

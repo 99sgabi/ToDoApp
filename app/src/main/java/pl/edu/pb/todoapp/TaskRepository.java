@@ -22,6 +22,11 @@ public class TaskRepository {
         return taskDao.loadTask(id);
     }
 
+    LiveData<List<Task>> loadTasksWithCategories(String name)
+    {
+        return taskDao.loadTasksIncludingCategories(name);
+    }
+
     LiveData<List<Task>> loadAllTasks()
     {
         return tasks;

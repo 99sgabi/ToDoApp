@@ -20,6 +20,11 @@ public class TaskViewModel extends AndroidViewModel {
         tasks = taskRepository.loadAllTasks();
     }
 
+    public LiveData<List<Task>> findTasksWithCategories(String name)
+    {
+        return taskRepository.loadTasksWithCategories(name);
+    }
+
     public LiveData<Task> findTaskById(int id)
     {
         return taskRepository.findTaskById(id);

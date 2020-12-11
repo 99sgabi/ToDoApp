@@ -34,4 +34,9 @@ public interface TaskDao {
     @Query("SELECT * FROM tasks WHERE id = :id")
     public LiveData<Task> loadTask(int id);
 
+    //@Query("SELECT * FROM tasks, categories WHERE tasks.categoryId = categories.id AND (tasks.name LIKE :likeName OR categories.name LIKE :likeName) ORDER BY date")
+
+    @Query("SELECT tasks.* FROM tasks, categories " +
+            "WHERE tasks.categoryId = categories.id AND (tasks.name LIKE :likeName OR categories.name LIKE :likeName)")
+    public LiveData<List<Task>> loadTasksIncludingCategories(String likeName);
 }

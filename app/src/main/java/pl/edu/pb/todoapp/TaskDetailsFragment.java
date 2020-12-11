@@ -89,7 +89,7 @@ public class TaskDetailsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        chronometer.setBase(System.currentTimeMillis() - task.getDate().getTime());
+        chronometer.setBase(task.getDate().getTime() - System.currentTimeMillis());
         chronometer.start();
     }
 

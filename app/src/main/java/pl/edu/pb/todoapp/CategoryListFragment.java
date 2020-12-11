@@ -13,16 +13,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -30,6 +33,7 @@ import java.util.List;
 public class CategoryListFragment extends Fragment {
     private RecyclerView recyclerView;
     private CategoryAdapter adapter;
+    private FloatingActionButton addButton;
     private CategoryViewModel categoryViewModel;
     public static final int REQUEST_CODE_CATEGORY_EDIT = 10;
     public static final int REQUEST_CODE_CATEGORY_CREATE = 11;
@@ -55,6 +59,14 @@ public class CategoryListFragment extends Fragment {
         View view = inflater.inflate(R.layout.rv_list, container,false);
         recyclerView = view.findViewById(R.id.task_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        addButton = view.findViewById(R.id.floating_add_button);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), CreateCategoryActvity.class);
+                startActivityForResult(intent,REQUEST_CODE_CATEGORY_CREATE);
+            }
+        });
 
         if(adapter == null)
         {
@@ -74,10 +86,6 @@ public class CategoryListFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.add_category:
-                Intent intent = new Intent(getActivity(), CreateCategoryActvity.class);
-                startActivityForResult(intent,REQUEST_CODE_CATEGORY_CREATE);
-                return true;
             case R.id.show_tasks:
                 //go back to previous activity
                 getActivity().finish();
@@ -85,8 +93,6 @@ public class CategoryListFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
-
-
     }
 
     @Override
@@ -95,24 +101,24 @@ public class CategoryListFragment extends Fragment {
         if(requestCode == REQUEST_CODE_CATEGORY_CREATE)
         {
             if(resultCode == Activity.RESULT_OK) {
-                Snackbar.make(getActivity().findViewById(R.id.fragment_container),
+                Snackbar.make(getActivity().findViewById(R.id.coordinator_layout),
                         getString(R.string.category_created),
                         Snackbar.LENGTH_LONG).show();
             }
             else
-                Snackbar.make(getActivity().findViewById(R.id.fragment_container),
+                Snackbar.make(getActivity().findViewById(R.id.coordinator_layout),
                         getString(R.string.empty_category_cancelled),
                         Snackbar.LENGTH_LONG).show();
         }
         else if(requestCode == REQUEST_CODE_CATEGORY_EDIT)
         {
             if(resultCode == Activity.RESULT_OK) {
-                Snackbar.make(getActivity().findViewById(R.id.fragment_container),
+                Snackbar.make(getActivity().findViewById(R.id.coordinator_layout),
                         getString(R.string.task_edit_was_successful),
                         Snackbar.LENGTH_LONG).show();
             }
             else
-                Snackbar.make(getActivity().findViewById(R.id.fragment_container),
+                Snackbar.make(getActivity().findViewById(R.id.coordinator_layout),
                         getString(R.string.task_edit_was_unsuccessful),
                         Snackbar.LENGTH_LONG).show();
         }

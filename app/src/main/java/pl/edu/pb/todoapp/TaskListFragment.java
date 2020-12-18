@@ -185,6 +185,7 @@ public class TaskListFragment extends Fragment {
                 .setPositiveButton(getString(R.string.confirm), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        TaskDetailsFragment.cancelNotification(getActivity().getApplicationContext(), t);
                         taskViewModel.delete(t);
                     }
                 })

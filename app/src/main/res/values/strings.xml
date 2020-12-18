@@ -47,4 +47,8 @@
     <string name="motivated_message">It is possible that today you will complete all of the tasks!</string>
     <string name="unmotivated_message">You need to motivate yourself today a little bit more than usually!</string>
     <string name="lightly_motivated_message">Stay motivated, never give up!</string>
+    <string name="notification_title">Task deadline is pretty close</string>
+    <string name="notification_channel_name">Tasks</string>
+    <string name="notification_description">This is channel for managing tasks</string>
+    <string name="toggle_switch_title">Remind me</string>
 </resources>

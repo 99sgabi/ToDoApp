@@ -44,7 +44,7 @@ public class TaskRepository {
 
     void insert(Task task){
         TaskDatabase.databaseWriterExecutor.execute(() -> {
-            taskDao.insert(task);
+             taskDao.insert(task);
         });
     }
 
@@ -64,4 +64,10 @@ public class TaskRepository {
     {
         return taskDao.loadTask(id);
     }
+
+    LiveData<Task> getLastTask(int rowId)
+    {
+        return taskDao.getLastTask(rowId);
+    }
+
 }

@@ -26,6 +26,7 @@ public class Task implements Serializable{
     private boolean done;
     private Date date;
     private Priority priority;
+    private boolean notifyUser;
 
     @ColumnInfo(index = true)
     private Integer categoryId;
@@ -71,6 +72,11 @@ public class Task implements Serializable{
         return priority;
     }
 
+    public boolean getNotifyUser()
+    {
+        return notifyUser;
+    }
+
     public void setId(Integer id)
     {
         this.id = id;
@@ -104,6 +110,11 @@ public class Task implements Serializable{
     public void setCategoryId(Integer id)
     {
         this.categoryId = id;
+    }
+
+    public void setNotifyUser(boolean n)
+    {
+        this.notifyUser = n;
     }
 
     public static class Converter {

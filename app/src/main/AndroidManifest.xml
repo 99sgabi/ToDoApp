@@ -3,7 +3,8 @@
     package="pl.edu.pb.todoapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,11 +13,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
         <receiver
-            android:name=".BroadcastManager"
+            android:name=".NotificationReceiver"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true"></receiver>
+
+        <service
+            android:name=".NotificationService"
+            android:enabled="true"
+            android:exported="false" />
 
         <activity android:name=".CategoryListActivity" />
         <activity android:name=".CreateCategoryActvity" />

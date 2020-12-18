@@ -45,6 +45,11 @@ public class TaskViewModel extends AndroidViewModel {
         return taskRepository.loadTasks(startDate, endDate);
     }
 
+    public LiveData<Task>  getLastTask(int rowId)
+    {
+        return taskRepository.getLastTask(rowId);
+    }
+
     public void insert(Task task)
     {
         taskRepository.insert(task);

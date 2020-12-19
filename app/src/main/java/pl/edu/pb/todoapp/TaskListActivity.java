@@ -80,10 +80,10 @@ public class TaskListActivity extends SingleFragmentActivity {
                     Location location = task.getResult();
                     if(location != null)
                     {
-                        // TODO: make sure String is correct . i , zwlaszcza
                         double longitude = location.getLongitude();
                         double latitude = location.getLatitude();
-                        String query = Double.toString(latitude) + "," + Double.toString(longitude);
+                        String query = String.format(Locale.US, "%.4f", latitude) + "," + String.format(Locale.US, "%.4f", longitude);
+                        //String query = Double.toString(latitude) + "," + Double.toString(longitude);
                         findClosesedCity(query);
                     }
                 }

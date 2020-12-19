@@ -43,19 +43,41 @@ public class TaskListFragment extends Fragment {
     //public static final int REQUEST_CODE_TASK_DETAILS = 1;
     public static final int REQUEST_CODE_TASK_CREATE = 2;
     public static final int REQUEST_CODE_TASK_EDIT = 3;
+    private boolean sortedByDate = true;
+    private static final String KEY_SORT="sort";
 
-    @Override
-    public void onCreate(Bundle savedInstanceState)
+    private void loadAllTaskByDate()
     {
-        super.onCreate(savedInstanceState);
-
-        taskViewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
         taskViewModel.findAllTasks().observe(this, new Observer<List<Task>>() {
             @Override
             public void onChanged(List<Task> tasks) {
                 adapter.setTasks(tasks);
             }
         });
+    }
+
+    private void loadAllTaskBYPriority()
+    {
+        taskViewModel.findTasksOrderByPriority().observe(this, new Observer<List<Task>>() {
+            @Override
+            public void onChanged(List<Task> tasks) {
+                adapter.setTasks(tasks);
+            }
+        });
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        if(savedInstanceState != null)
+            sortedByDate = savedInstanceState.getBoolean(KEY_SORT, true);
+
+        taskViewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
+        if(sortedByDate)
+            loadAllTaskByDate();
+        else
+            loadAllTaskBYPriority();
         setHasOptionsMenu(true);
     }
 
@@ -114,15 +136,20 @@ public class TaskListFragment extends Fragment {
                 startActivity(categoryIntent);
                 return true;
             case R.id.sort_option:
-                //TODO: uzupełnić kod do sortowania odpowiednio listy, moze on cardview jakos podzielić zadania z tego samego dnia
+                if(sortedByDate)
+                {
+                    loadAllTaskBYPriority();
+                    item.setTitle(getString(R.string.sort_date_title));
+                }
+                else
+                {
+                    loadAllTaskByDate();
+                    item.setTitle(getString(R.string.sort_priority_title));
+                }
+                sortedByDate = !sortedByDate;
                 return true;
             case R.id.clear_search:
-                taskViewModel.findAllTasks().observe(this, new Observer<List<Task>>() {
-                    @Override
-                    public void onChanged(List<Task> tasks) {
-                        adapter.setTasks(tasks);
-                    }
-                });
+                loadAllTaskByDate();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -136,6 +163,12 @@ public class TaskListFragment extends Fragment {
     {   //TODO: moze poprawic to jakoś
         super.onResume();
         updateView();
+    }
+
+    @Override
+    public void onSaveInstanceState(@androidx.annotation.NonNull Bundle outState) {
+        //super.onSaveInstanceState(outState);
+        outState.putBoolean(KEY_SORT, sortedByDate);
     }
 
     @Override

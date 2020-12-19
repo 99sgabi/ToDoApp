@@ -25,19 +25,20 @@ public interface TaskDao {
     @Query("SELECT * FROM tasks ORDER BY date")
     public LiveData<List<Task>> loadTasks();
 
-    @Query("SELECT * FROM tasks WHERE :startDate >= date AND date >= :endDate ORDER BY date")
-    public LiveData<List<Task>> loadTasks(Date startDate, Date endDate);
+    @Query("SELECT * FROM tasks ORDER BY priority DESC")
+    public LiveData<List<Task>> loadTasksOrderByPriority();
 
-    @Query("SELECT * FROM tasks WHERE :startDate >= date ORDER BY date")
-    public LiveData<List<Task>> loadTasks(Date startDate);
+    @Query("SELECT * FROM tasks WHERE :currentDate <= date ORDER BY date")
+    public LiveData<List<Task>> loadTasks(Date currentDate);
+
+    @Query("SELECT * FROM tasks WHERE :currentDate >= date AND done = 0 ORDER BY date DESC")
+    public LiveData<List<Task>> loadMissedTasks(Date currentDate);
 
     @Query("SELECT * FROM tasks WHERE name LIKE :likeName ORDER BY date")
     public LiveData<List<Task>> loadTasks(String likeName);
 
     @Query("SELECT * FROM tasks WHERE id = :id")
     public LiveData<Task> loadTask(int id);
-
-    //@Query("SELECT * FROM tasks, categories WHERE tasks.categoryId = categories.id AND (tasks.name LIKE :likeName OR categories.name LIKE :likeName) ORDER BY date")
 
     @Query("SELECT tasks.* FROM tasks, categories " +
             "WHERE tasks.categoryId = categories.id AND (tasks.name LIKE :likeName OR categories.name LIKE :likeName)")

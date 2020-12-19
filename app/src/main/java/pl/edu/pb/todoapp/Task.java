@@ -119,23 +119,21 @@ public class Task implements Serializable{
 
     public static class Converter {
         @TypeConverter
-        public Priority fromStringToPriority(String priority) {
-            if (priority.isEmpty())
-                return Priority.LOW;
-            if(priority.equals("high"))
+        public Priority fromStringToPriority(int priority) {
+            if(priority == 3)
                 return Priority.HIGH;
-            if(priority.equals("medium"))
+            if(priority == 2)
                 return Priority.MEDIUM;
             return Priority.LOW;
         }
 
         @TypeConverter
-        public String fromPriorityToString(Priority priority) {
+        public int fromPriorityToString(Priority priority) {
             if(priority == Priority.HIGH)
-                return "high";
+                return 3;
             if(priority == Priority.MEDIUM)
-                return "medium";
-            return "low";
+                return 2;
+            return 1;
         }
 
         @TypeConverter

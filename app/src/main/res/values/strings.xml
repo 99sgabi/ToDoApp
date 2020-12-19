@@ -15,9 +15,6 @@
     <string name="create_task_name_label">Enter name</string>
     <string name="create_task_label">Create Task</string>
     <string name="add_task_option">Add task</string>
-    <string name="sort_by_date_option">Sort by date</string>
-    <string name="sort_by_name_option">Sort by name</string>
-    <string name="sort_by_priority_option">Sort by priority</string>
     <string name="task_created">Task was created</string>
     <string name="category_created">Category was created</string>
     <string name="empty_task_cancelled">The fields were empty: name, time, date should not be empty</string>
@@ -51,4 +48,6 @@
     <string name="notification_channel_name">Tasks</string>
     <string name="notification_description">This is channel for managing tasks</string>
     <string name="toggle_switch_title">Remind me</string>
+    <string name="sort_date_title">Sort by date</string>
+    <string name="sort_priority_title">Sort by priority</string>
 </resources>

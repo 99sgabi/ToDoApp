@@ -89,11 +89,13 @@ public class TaskDetailsFragment extends Fragment {
                 if(isChecked)
                 {
                     task.setNotifyUser(true);
+                    taskViewModel.update(task);
                     scheduleNotification(getActivity().getApplicationContext(), task);
                 }
                 else
                 {
                     task.setNotifyUser(false);
+                    taskViewModel.update(task);
                     cancelNotification(getActivity().getApplicationContext(), task);
                 }
             }

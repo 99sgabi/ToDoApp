@@ -17,6 +17,12 @@ public class TaskRepository {
         taskDao = taskDatabase.taskDao();
         tasks = taskDao.loadTasks();
     }
+
+    LiveData<List<Task>> findTasksOrderByPriority()
+    {
+        return taskDao.loadTasksOrderByPriority();
+    }
+
     LiveData<Task> findTaskById(int id)
     {
         return taskDao.loadTask(id);
@@ -37,9 +43,9 @@ public class TaskRepository {
         return taskDao.loadTasks(name);
     }
 
-    LiveData<List<Task>> loadTasks(Date startDate, Date endDate)
+    LiveData<List<Task>> loadTasks(Date currentDate)
     {
-        return taskDao.loadTasks(startDate,endDate);
+        return taskDao.loadTasks(currentDate);
     }
 
     void insert(Task task){

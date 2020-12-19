@@ -25,6 +25,11 @@ public class TaskViewModel extends AndroidViewModel {
         return taskRepository.loadTasksWithCategories(name);
     }
 
+    public LiveData<List<Task>> findTasksOrderByPriority()
+    {
+        return taskRepository.findTasksOrderByPriority();
+    }
+
     public LiveData<Task> findTaskById(int id)
     {
         return taskRepository.findTaskById(id);
@@ -40,9 +45,9 @@ public class TaskViewModel extends AndroidViewModel {
         return taskRepository.loadTasks(name);
     }
 
-    public LiveData<List<Task>> findTasks(Date startDate, Date endDate)
+    public LiveData<List<Task>> findTasks(Date currentDate)
     {
-        return taskRepository.loadTasks(startDate, endDate);
+        return taskRepository.loadTasks(currentDate);
     }
 
     public LiveData<Task>  getLastTask(int rowId)
@@ -64,5 +69,6 @@ public class TaskViewModel extends AndroidViewModel {
     {
         taskRepository.delete(task);
     }
+
 
 }

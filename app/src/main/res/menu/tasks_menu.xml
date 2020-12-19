@@ -14,7 +14,7 @@
         android:id="@+id/switch_to_categories"
         android:icon="@drawable/ic_categories"
         app:showAsAction="ifRoom"/>
-    <item android:title="sort"
+    <item android:title="@string/sort_priority_title"
         android:id="@+id/sort_option"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_sort"/>

@@ -32,7 +32,7 @@ public interface TaskDao {
     public LiveData<List<Task>> loadTasks(Date currentDate);
 
     @Query("SELECT * FROM tasks WHERE :currentDate >= date AND done = 0 ORDER BY date DESC")
-    public LiveData<List<Task>> loadMissedTasks(Date currentDate);
+    public LiveData<List<Task>> loadMissedTasks(long currentDate);
 
     @Query("SELECT * FROM tasks WHERE name LIKE :likeName ORDER BY date")
     public LiveData<List<Task>> loadTasks(String likeName);

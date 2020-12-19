@@ -71,6 +71,11 @@ public class TaskRepository {
         return taskDao.loadTask(id);
     }
 
+    LiveData<List<Task>> loadMissedTasks(long date)
+    {
+        return taskDao.loadMissedTasks(date);
+    }
+
     LiveData<Task> getLastTask(int rowId)
     {
         return taskDao.getLastTask(rowId);

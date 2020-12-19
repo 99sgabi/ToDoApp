@@ -70,5 +70,8 @@ public class TaskViewModel extends AndroidViewModel {
         taskRepository.delete(task);
     }
 
-
+    public LiveData<List<Task>> findMissedTasks(long currentDateMillis)
+    {
+        return  taskRepository.loadMissedTasks(currentDateMillis);
+    }
 }

@@ -18,5 +18,8 @@
         android:id="@+id/sort_option"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_sort"/>
+    <item android:title="@string/show_missed_tasks"
+        android:id="@+id/missed_tasks"
+        app:showAsAction="ifRoom" />
 
 </menu>

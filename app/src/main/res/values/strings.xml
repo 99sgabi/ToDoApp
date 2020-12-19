@@ -50,4 +50,6 @@
     <string name="toggle_switch_title">Remind me</string>
     <string name="sort_date_title">Sort by date</string>
     <string name="sort_priority_title">Sort by priority</string>
+    <string name="show_missed_tasks">Missed tasks view</string>
+    <string name="show_all_tasks">Normal tasks view</string>
 </resources>

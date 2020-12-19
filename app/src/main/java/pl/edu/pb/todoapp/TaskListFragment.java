@@ -44,7 +44,9 @@ public class TaskListFragment extends Fragment {
     public static final int REQUEST_CODE_TASK_CREATE = 2;
     public static final int REQUEST_CODE_TASK_EDIT = 3;
     private boolean sortedByDate = true;
+    private boolean missedTasks;
     private static final String KEY_SORT="sort";
+    private static final String KEY_MISSED_TASKS="missedTasks";
 
     private void loadAllTaskByDate()
     {
@@ -66,14 +68,28 @@ public class TaskListFragment extends Fragment {
         });
     }
 
+    private void loadMissedTasks()
+    {
+        taskViewModel.findMissedTasks(System.currentTimeMillis()).observe(this, new Observer<List<Task>>() {
+            @Override
+            public void onChanged(List<Task> tasks) {
+                adapter.setTasks(tasks);
+            }
+        });
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState != null)
+        if(savedInstanceState != null){
             sortedByDate = savedInstanceState.getBoolean(KEY_SORT, true);
+            missedTasks = savedInstanceState.getBoolean(KEY_MISSED_TASKS, false);
+        }
 
         taskViewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
+        if(missedTasks)
+            loadMissedTasks();
         if(sortedByDate)
             loadAllTaskByDate();
         else
@@ -151,6 +167,19 @@ public class TaskListFragment extends Fragment {
             case R.id.clear_search:
                 loadAllTaskByDate();
                 return true;
+            case R.id.missed_tasks:
+                if(missedTasks)
+                {
+                    loadMissedTasks();
+                    item.setTitle(getString(R.string.show_all_tasks));
+                }
+                else
+                {
+                    loadAllTaskByDate();
+                    item.setTitle(getString(R.string.show_missed_tasks));
+                }
+                missedTasks = !missedTasks;
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -169,6 +198,7 @@ public class TaskListFragment extends Fragment {
     public void onSaveInstanceState(@androidx.annotation.NonNull Bundle outState) {
         //super.onSaveInstanceState(outState);
         outState.putBoolean(KEY_SORT, sortedByDate);
+        outState.putBoolean(KEY_MISSED_TASKS, missedTasks);
     }
 
     @Override

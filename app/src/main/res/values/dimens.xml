@@ -9,4 +9,6 @@
     <dimen name="ChronometerSize">25dp</dimen>
     <dimen name="CategoryNameSize">20dp</dimen>
     <dimen name="recycler_view">0dp</dimen>
+    <dimen name="category_list_item_icon">50dp</dimen>
+    <dimen name="min_icon_display">142dp</dimen>
 </resources>

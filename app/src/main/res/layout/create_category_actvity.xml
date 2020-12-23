@@ -8,13 +8,45 @@
     tools:context=".CreateCategoryActvity"
     android:gravity="center">
 
+    <ImageView
+        android:id="@+id/category_icon_create"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/min_icon_display"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <Button
+            android:id="@+id/take_picture_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/take_picture_title"
+            style="@style/ButtonsStyle"
+            android:layout_weight="1"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/white" />
+
+        <Button
+            android:id="@+id/load_picture_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/load_picture_title"
+            style="@style/ButtonsStyle"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
     <EditText
         android:id="@+id/category_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name"
         android:hint="@string/category_name_hint"/>
 
     <EditText

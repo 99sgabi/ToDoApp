@@ -1,24 +1,48 @@
 package pl.edu.pb.todoapp;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.List;
 
 public class CreateCategoryActvity extends AppCompatActivity {
 
     Button activityButton;
+    Button loadButton;
+    Button capturePictureButton;
     EditText nameEditText;
     EditText descriptionEditText;
+    ImageView categoryIcon;
     CategoryViewModel categoryViewModel;
     Category currentCategory;
+    boolean categoryExists;
+    public static int REQUEST_LOAD_PICTURE = 0;
+    public static final int REQUEST_CAPTURE_PICTURE = 1;
 
     private Category prepareCategory(Category category)
     {
@@ -47,7 +71,7 @@ public class CreateCategoryActvity extends AppCompatActivity {
     private boolean addNewCategory()
     {
         if(!checkIfEmpty()) return false;
-        categoryViewModel.insert(prepareCategory(new Category()));
+        categoryViewModel.insert(prepareCategory(currentCategory));
         return true;
     }
 
@@ -64,9 +88,99 @@ public class CreateCategoryActvity extends AppCompatActivity {
         {
             nameEditText.setText(currentCategory.getName());
             descriptionEditText.setText(currentCategory.getShortDescription());
-            //icon
+            Bitmap picture = BitmapFactory.decodeFile(currentCategory.getPhotoPath());
+            categoryIcon.setImageBitmap(picture);
             activityButton.setText(R.string.edit_category_button);
+            categoryExists = true;
         }
+        else
+            currentCategory = new Category();
+    }
+
+    private void setActivityButtonListener()
+    {
+        activityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean result;
+                if(categoryExists)
+                    result = updateCategory(currentCategory);
+                else
+                    result = addNewCategory();
+
+
+                Intent replyIntent = new Intent();
+                if(result == true)
+                    setResult(Activity.RESULT_OK, replyIntent);
+                else
+                    setResult(Activity.RESULT_CANCELED, replyIntent);
+                finish();
+            }
+        });
+    }
+
+    private void setLoadButtonListener()
+    {
+        loadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, REQUEST_LOAD_PICTURE);
+            }
+        });
+    }
+
+    private File preparePictureFile()
+    {
+        String timeStamp = Long.toString(System.currentTimeMillis());
+        String fileName = "PICTURE_" + timeStamp + "_";
+        //TODO: poprawić to bo to jest depricated
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File picture = null;
+        try {
+            picture = File.createTempFile(fileName, ".jpg", storageDir);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentCategory.setPhotoPath(picture.getAbsolutePath());
+        return picture;
+    }
+
+    private void invokeTakePictureIntent() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            File pictureFile = null;
+            pictureFile = preparePictureFile();
+
+            // Continue only if the File was successfully created
+            if (pictureFile != null) {
+                Uri pictureUri = FileProvider.getUriForFile(this, "pl.edu.pb.todoapp", pictureFile);
+                //currentCategory.setPhotoPath(pictureUri.toString());
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, pictureUri);
+                startActivityForResult(intent, REQUEST_CAPTURE_PICTURE);
+            }
+        }
+    }
+
+    private void galleryAddPic() {
+        //TODO: zrobić żeby działąło
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(currentCategory.getPhotoPath());
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
+    }
+
+    private void setCapturePictureButtonListener()
+    {
+        capturePictureButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                invokeTakePictureIntent();
+            }
+        });
     }
 
     @Override
@@ -80,7 +194,6 @@ public class CreateCategoryActvity extends AppCompatActivity {
         categoryViewModel.loadCategoryById(id).observe(this, new Observer<Category>() {
             @Override
             public void onChanged(Category category) {
-                //TODO: naprawić to2
                 currentCategory = category;
                 setFields();
             }
@@ -91,23 +204,55 @@ public class CreateCategoryActvity extends AppCompatActivity {
         descriptionEditText = findViewById(R.id.category_short_description);
         categoryViewModel = ViewModelProviders.of(this).get(CategoryViewModel.class);
         activityButton.setText(R.string.create_category_button);
+        loadButton = findViewById(R.id.load_picture_button);
+        capturePictureButton = findViewById(R.id.take_picture_button);
+        categoryIcon = findViewById(R.id.category_icon_create);
 
-        activityButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                boolean result;
-                if(currentCategory != null)
-                    result = updateCategory(currentCategory);
-                else
-                    result = addNewCategory();
+        setActivityButtonListener();
+        setLoadButtonListener();
+        setCapturePictureButtonListener();
+    }
 
-                Intent replyIntent = new Intent();
-                if(result == true)
-                    setResult(Activity.RESULT_OK, replyIntent);
-                else
-                    setResult(Activity.RESULT_CANCELED, replyIntent);
-                finish();
-            }
-        });
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == REQUEST_LOAD_PICTURE && resultCode == RESULT_OK)
+        {
+            /*Uri pictureUri = data.getData();
+            currentCategory.setPhotoPath(pictureUri.getPath());
+            Bitmap picture = BitmapFactory.decodeFile(currentCategory.getPhotoPath());
+            categoryIcon.setImageBitmap(picture);
+            /*Bitmap picture;
+            currentCategory.setPhotoPath(pictureUri.toString());
+            try {
+                picture = BitmapFactory.decodeStream(getContentResolver().openInputStream(pictureUri));
+                categoryIcon.setImageBitmap(picture);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }*/
+            Uri pictureUri = data.getData();//this one generates a correct path i guess
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            Cursor cursor = getContentResolver().query(pictureUri,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String path = cursor.getString(columnIndex);
+            cursor.close();
+            categoryIcon.setImageBitmap(BitmapFactory.decodeFile(path));
+            currentCategory.setPhotoPath(path);
+        }
+        if(requestCode == REQUEST_CAPTURE_PICTURE && resultCode == RESULT_OK)
+        {
+            Bitmap picture = BitmapFactory.decodeFile(currentCategory.getPhotoPath());
+            categoryIcon.setImageBitmap(picture);
+            /*Bitmap picture;
+            try {
+                picture = BitmapFactory.decodeStream(getContentResolver().openInputStream(Uri.parse(currentCategory.getPhotoPath())));
+                categoryIcon.setImageBitmap(picture);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }*/
+            galleryAddPic();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

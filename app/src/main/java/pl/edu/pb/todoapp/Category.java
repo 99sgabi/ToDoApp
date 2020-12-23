@@ -10,6 +10,16 @@ public class Category {
     private String name;
     private String shortDescription;
 
+    public String getPhotoPath() {
+        return photoPath;
+    }
+
+    public void setPhotoPath(String photoPath) {
+        this.photoPath = photoPath;
+    }
+
+    private String photoPath;
+
     public Integer getId()
     {
         return id;

@@ -13,8 +13,8 @@
 
         <ImageView
             android:id="@+id/category_image"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="@dimen/category_list_item_icon"
+            android:layout_height="@dimen/category_list_item_icon"
             android:background="@color/buttonBackground"
             app:srcCompat="@drawable/ic_default_category" />
 

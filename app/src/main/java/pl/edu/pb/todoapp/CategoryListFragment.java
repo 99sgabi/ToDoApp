@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 public class CategoryListFragment extends Fragment {
@@ -190,7 +194,19 @@ public class CategoryListFragment extends Fragment {
             this.category = category;
             nameTextView.setText(category.getName());
             descriptionTextView.setText(category.getShortDescription());
-            //setting icon
+            if(category.getPhotoPath() != null)
+            {
+                Bitmap picture = BitmapFactory.decodeFile(category.getPhotoPath());
+                icon.setImageBitmap(picture);
+                /*Bitmap picture;
+                try {
+                    Uri pictureUri = Uri.parse(category.getPhotoPath());
+                    picture = BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(pictureUri));
+                    icon.setImageBitmap(picture);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }*/
+            }
         }
 
         @Override

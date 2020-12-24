@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
 
@@ -206,6 +207,8 @@ public class CategoryListFragment extends Fragment {
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }*/
+                /*Uri pictureUri = Uri.parse(category.getPhotoPath());
+                icon.setImageURI(pictureUri);*/
             }
         }
 

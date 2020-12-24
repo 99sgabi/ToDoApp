@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".CreateCategoryActvity"
-    android:gravity="center">
+    android:gravity="center"
+    android:id="@+id/main_layout">
 
     <ImageView
         android:id="@+id/category_icon_create"

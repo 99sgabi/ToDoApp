@@ -54,4 +54,6 @@
     <string name="show_all_tasks">Normal tasks view</string>
     <string name="take_picture_title">Take a picture</string>
     <string name="load_picture_title">Load a picture</string>
+    <string name="unable_to_load_picture">You cannot load a picture</string>
+    <string name="unable_to_capture_picture">You cannot take a picture</string>
 </resources>

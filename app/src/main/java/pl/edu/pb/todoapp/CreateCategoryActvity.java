@@ -1,8 +1,10 @@
 package pl.edu.pb.todoapp;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -10,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders;
 import android.Manifest;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -25,9 +28,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CreateCategoryActvity extends AppCompatActivity {
@@ -43,6 +49,53 @@ public class CreateCategoryActvity extends AppCompatActivity {
     boolean categoryExists;
     public static int REQUEST_LOAD_PICTURE = 0;
     public static final int REQUEST_CAPTURE_PICTURE = 1;
+    public static final int REQUEST_EXTERNAL_STORAGE_PERMISSIONS = 122;
+    public static final int REQUEST_CAMERA_PERMISSIONS = 124;
+
+    public void checkStoragePermissions()
+    {
+        if (ActivityCompat.checkSelfPermission(CreateCategoryActvity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            loadButton.setEnabled(false);
+            ActivityCompat.requestPermissions(
+                    CreateCategoryActvity.this,
+                    new String[] {
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            Manifest.permission.READ_EXTERNAL_STORAGE
+                    },
+                    REQUEST_EXTERNAL_STORAGE_PERMISSIONS
+            );
+        }
+    }
+
+    public void checkCameraPermissions()
+    {
+        if (ActivityCompat.checkSelfPermission(CreateCategoryActvity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            capturePictureButton.setEnabled(false);
+            ActivityCompat.requestPermissions(
+                    CreateCategoryActvity.this,
+                    new String[] {
+                            Manifest.permission.CAMERA
+                    },
+                    REQUEST_CAMERA_PERMISSIONS
+            );
+        }
+    }
+
+    /*private void setEnabledButtons()
+    {
+        if (ActivityCompat.checkSelfPermission(CreateCategoryActvity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            loadButton.setEnabled(false);
+        }
+        else
+            loadButton.setEnabled(true);
+
+        if (ActivityCompat.checkSelfPermission(CreateCategoryActvity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            capturePictureButton.setEnabled(false);
+        }
+        else
+            capturePictureButton.setEnabled(true);
+    }*/
+
 
     private Category prepareCategory(Category category)
     {
@@ -207,6 +260,8 @@ public class CreateCategoryActvity extends AppCompatActivity {
         loadButton = findViewById(R.id.load_picture_button);
         capturePictureButton = findViewById(R.id.take_picture_button);
         categoryIcon = findViewById(R.id.category_icon_create);
+        checkStoragePermissions();
+        checkCameraPermissions();
 
         setActivityButtonListener();
         setLoadButtonListener();
@@ -214,13 +269,48 @@ public class CreateCategoryActvity extends AppCompatActivity {
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CAMERA_PERMISSIONS:
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+                    capturePictureButton.setEnabled(true);
+                }
+                else
+                {
+                    capturePictureButton.setEnabled(false);
+                    Snackbar.make(findViewById(R.id.main_layout),
+                            getString(R.string.unable_to_capture_picture),
+                            Snackbar.LENGTH_LONG).show();
+                }
+                return;
+            case REQUEST_EXTERNAL_STORAGE_PERMISSIONS:
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+                    loadButton.setEnabled(true);
+                }
+                else
+                {
+                    loadButton.setEnabled(false);
+                    Snackbar.make(findViewById(R.id.main_layout),
+                        getString(R.string.unable_to_load_picture),
+                        Snackbar.LENGTH_LONG).show();
+                }
+                return;
+        }
+        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == REQUEST_LOAD_PICTURE && resultCode == RESULT_OK)
         {
-            /*Uri pictureUri = data.getData();
-            currentCategory.setPhotoPath(pictureUri.getPath());
+            //Uri pictureUri = data.getData();
+            /*currentCategory.setPhotoPath(pictureUri.getPath());
             Bitmap picture = BitmapFactory.decodeFile(currentCategory.getPhotoPath());
-            categoryIcon.setImageBitmap(picture);
+            categoryIcon.setImageBitmap(picture);*/
             /*Bitmap picture;
             currentCategory.setPhotoPath(pictureUri.toString());
             try {
@@ -237,8 +327,20 @@ public class CreateCategoryActvity extends AppCompatActivity {
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             String path = cursor.getString(columnIndex);
             cursor.close();
+            /*File file = new File(path);
+            if (file.exists()) {
+                categoryIcon.setImageBitmap(BitmapFactory.decodeFile(file.getAbsolutePath()));
+                currentCategory.setPhotoPath(path);
+
+            }*/
+
             categoryIcon.setImageBitmap(BitmapFactory.decodeFile(path));
             currentCategory.setPhotoPath(path);
+            /*File file = new File(pictureUri.getPath());
+            final String[] split = file.getPath().split(":");
+            currentCategory.setPhotoPath(split[1]);
+            Bitmap picture = BitmapFactory.decodeFile(currentCategory.getPhotoPath());
+            categoryIcon.setImageBitmap(picture);*/
         }
         if(requestCode == REQUEST_CAPTURE_PICTURE && resultCode == RESULT_OK)
         {

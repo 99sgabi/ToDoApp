@@ -112,7 +112,7 @@ public class TaskDetailsFragment extends Fragment {
         dateField.setText(getTasksDateString());
         nameField.setText(task.getName());
         doneCheckBox.setChecked(task.getDone());
-        taskViewModel.getCategoryName(task.getId()).observe(this, new Observer<String>() {
+        taskViewModel.getCategoryName(task.getId()).observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String categoryName) {
                 categoryField.setText(getResources().getString(R.string.task_details_category_label,categoryName));

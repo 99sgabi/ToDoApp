@@ -79,4 +79,8 @@ public class TaskViewModel extends AndroidViewModel {
     {
         return taskRepository.getCategoryName(taskId);
     }
+
+    public LiveData<List<Task>> findCategoryTasks(int categoryId) {
+        return taskRepository.loadCategoryTasks(categoryId);
+    }
 }

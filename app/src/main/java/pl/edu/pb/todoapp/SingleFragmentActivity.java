@@ -10,7 +10,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
 
     public void startUp()
     {
-        setContentView(R.layout.activity_main);
+        //setContentView(R.layout.activity_main);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_container);

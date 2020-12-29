@@ -171,7 +171,7 @@ public class CategoryListFragment extends Fragment {
                 }).show();
     }
 
-    private class CategoryHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener
+    private class CategoryHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener, View.OnClickListener
     {
         private Category category;
         private TextView nameTextView;
@@ -182,6 +182,7 @@ public class CategoryListFragment extends Fragment {
         {
             super(inflater.inflate(R.layout.list_item_category, parent, false));
             itemView.setOnLongClickListener(this);
+            itemView.setOnClickListener(this);
 
             nameTextView = itemView.findViewById(R.id.category_item_name);
             descriptionTextView = itemView.findViewById(R.id.category_item_short_description);
@@ -214,6 +215,13 @@ public class CategoryListFragment extends Fragment {
         public boolean onLongClick(View v) {
             createPopUpMenu(v, category);
             return false;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(getActivity(),CategoryTasksListActivity.class);
+            intent.putExtra(CategoryTasksListActivity.KEY_CATEGORY_ID,category.getId());
+            startActivity(intent);
         }
     }
 

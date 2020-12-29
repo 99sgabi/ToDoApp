@@ -86,4 +86,7 @@ public class TaskRepository {
         return taskDao.getLastTask(rowId);
     }
 
+    public LiveData<List<Task>> loadCategoryTasks(int categoryId) {
+        return taskDao.loadCategoryTasks(categoryId);
+    }
 }

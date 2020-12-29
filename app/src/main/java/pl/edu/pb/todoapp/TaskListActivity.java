@@ -170,6 +170,7 @@ public class TaskListActivity extends SingleFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
         startUp();
         createNotificationChannel();
         setContentView(R.layout.task_list_activity);

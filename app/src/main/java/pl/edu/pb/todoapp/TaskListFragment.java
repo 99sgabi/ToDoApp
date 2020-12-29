@@ -40,10 +40,10 @@ public class TaskListFragment extends Fragment {
     TextView noTasksTextView;
     public static String KEY_EXTRA_TASK_ID = "extraID";
     public static String KEY_TASK = "extraID";
+    public int categoryId = -1;//when it starts from category taskListActivity then id > 0 else -1
     private TaskViewModel taskViewModel;
     private FloatingActionButton addButton;
     private LifecycleOwner lifecycleOwner = this;
-    //public static final int REQUEST_CODE_TASK_DETAILS = 1;
     public static final int REQUEST_CODE_TASK_CREATE = 2;
     public static final int REQUEST_CODE_TASK_EDIT = 3;
     private boolean sortedByDate = true;
@@ -51,15 +51,20 @@ public class TaskListFragment extends Fragment {
     private static final String KEY_SORT="sort";
     private static final String KEY_MISSED_TASKS="missedTasks";
 
+    public void setCategoryId(int categoryId)
+    {
+        this.categoryId = categoryId;
+    }
+
     private void checkIfThereAreTasks(int count)
     {
-        if (count <= 0) {
-            recyclerView.setVisibility(View.GONE);
-            noTasksTextView.setVisibility(View.VISIBLE);
-        }
-        else {
+        if (count > 0 || categoryId > 0) {
             recyclerView.setVisibility(View.VISIBLE);
             noTasksTextView.setVisibility(View.GONE);
+        }
+        else {
+            recyclerView.setVisibility(View.GONE);
+            noTasksTextView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -77,6 +82,17 @@ public class TaskListFragment extends Fragment {
     private void loadAllTaskBYPriority()
     {
         taskViewModel.findTasksOrderByPriority().observe(this, new Observer<List<Task>>() {
+            @Override
+            public void onChanged(List<Task> tasks) {
+                adapter.setTasks(tasks);
+                checkIfThereAreTasks(tasks.size());
+            }
+        });
+    }
+
+    private void loadCategoryTasks()
+    {
+        taskViewModel.findCategoryTasks(categoryId).observe(this, new Observer<List<Task>>() {
             @Override
             public void onChanged(List<Task> tasks) {
                 adapter.setTasks(tasks);
@@ -106,13 +122,18 @@ public class TaskListFragment extends Fragment {
         }
 
         taskViewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
-        if(missedTasks)
-            loadMissedTasks();
-        if(sortedByDate)
-            loadAllTaskByDate();
+        if(categoryId != -1)
+            loadCategoryTasks();
         else
-            loadAllTaskBYPriority();
-        setHasOptionsMenu(true);
+        {
+            if(missedTasks)
+                loadMissedTasks();
+            if(sortedByDate)
+                loadAllTaskByDate();
+            else
+                loadAllTaskBYPriority();
+            setHasOptionsMenu(true);
+        }
     }
 
     @Override
@@ -202,13 +223,11 @@ public class TaskListFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
-
-
     }
 
     @Override
     public void onResume()
-    {   //TODO: moze poprawic to jakoś
+    {
         super.onResume();
         setAdapter();
     }

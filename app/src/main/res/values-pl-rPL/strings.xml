@@ -58,4 +58,5 @@
     <string name="toggle_switch_title">Przypomnij mi</string>
     <string name="notification_description">To jest kanał do zarządzania zadaniami</string>
     <string name="task_details_category_label">Kategoria zadania: %s</string>
+    <string name="no_tasks_message">Stwórz kilka zadań, żeby korzystać z aplikacji :D</string>
 </resources>

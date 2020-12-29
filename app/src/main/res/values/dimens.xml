@@ -11,4 +11,5 @@
     <dimen name="recycler_view">0dp</dimen>
     <dimen name="category_list_item_icon">50dp</dimen>
     <dimen name="min_icon_display">142dp</dimen>
+    <dimen name="no_tasks_padding">30dp</dimen>
 </resources>

@@ -57,4 +57,5 @@
     <string name="unable_to_load_picture">You cannot load a picture</string>
     <string name="unable_to_capture_picture">You cannot take a picture</string>
     <string name="task_details_category_label">Task Category: %s</string>
+    <string name="no_tasks_message">Create some tasks to use our app :D</string>
 </resources>

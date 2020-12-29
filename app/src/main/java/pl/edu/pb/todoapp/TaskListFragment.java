@@ -35,6 +35,7 @@ public class TaskListFragment extends Fragment {
 
     RecyclerView recyclerView;
     TaskAdapter adapter;
+    TextView noTasksTextView;
     public static String KEY_EXTRA_TASK_ID = "extraID";
     public static String KEY_TASK = "extraID";
     private TaskViewModel taskViewModel;
@@ -48,12 +49,25 @@ public class TaskListFragment extends Fragment {
     private static final String KEY_SORT="sort";
     private static final String KEY_MISSED_TASKS="missedTasks";
 
+    private void checkIfThereAreTasks(int count)
+    {
+        if (count <= 0) {
+            recyclerView.setVisibility(View.GONE);
+            noTasksTextView.setVisibility(View.VISIBLE);
+        }
+        else {
+            recyclerView.setVisibility(View.VISIBLE);
+            noTasksTextView.setVisibility(View.GONE);
+        }
+    }
+
     private void loadAllTaskByDate()
     {
         taskViewModel.findAllTasks().observe(this, new Observer<List<Task>>() {
             @Override
             public void onChanged(List<Task> tasks) {
                 adapter.setTasks(tasks);
+                checkIfThereAreTasks(tasks.size());
             }
         });
     }
@@ -64,6 +78,7 @@ public class TaskListFragment extends Fragment {
             @Override
             public void onChanged(List<Task> tasks) {
                 adapter.setTasks(tasks);
+                checkIfThereAreTasks(tasks.size());
             }
         });
     }
@@ -74,6 +89,7 @@ public class TaskListFragment extends Fragment {
             @Override
             public void onChanged(List<Task> tasks) {
                 adapter.setTasks(tasks);
+                checkIfThereAreTasks(tasks.size());
             }
         });
     }
@@ -103,6 +119,7 @@ public class TaskListFragment extends Fragment {
         View view = inflater.inflate(R.layout.rv_list, container,false);
         recyclerView = view.findViewById(R.id.task_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        noTasksTextView = view.findViewById(R.id.no_tasks_message);
         addButton = view.findViewById(R.id.floating_add_button);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override

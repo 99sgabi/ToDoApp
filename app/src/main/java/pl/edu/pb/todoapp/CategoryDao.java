@@ -33,4 +33,6 @@ public interface CategoryDao {
     @Query("SELECT * FROM categories WHERE id = :id")
     public LiveData<Category> loadCategory(int id);
 
+    @Query("SELECT COUNT(*) FROM categories WHERE name LIKE 'Default Category'")
+    public int countDefaultCategories();
 }

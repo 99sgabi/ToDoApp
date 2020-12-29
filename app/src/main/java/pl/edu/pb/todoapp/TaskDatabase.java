@@ -31,7 +31,7 @@ public abstract class TaskDatabase extends RoomDatabase {
                 if(DATABASE_INSTANCE == null)
                 {
                     DATABASE_INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            TaskDatabase.class, "to_do_db").build();
+                            TaskDatabase.class, "to_do_db").addCallback(initialDataCallBack).build();
                 }
             }
         return DATABASE_INSTANCE;
@@ -42,11 +42,14 @@ public abstract class TaskDatabase extends RoomDatabase {
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
             super.onOpen(db);
             databaseWriterExecutor.execute( () -> {
-                TaskDao taskDao = DATABASE_INSTANCE.taskDao();
-                Task task = new Task();
-                task.setName("xx");
-                task.setDate(new Date(System.currentTimeMillis()));
-                taskDao.insert(task);
+                CategoryDao categoryDao = DATABASE_INSTANCE.categoryDao();
+                if(categoryDao.countDefaultCategories() < 1)
+                {
+                    Category default_category = new Category();
+                    default_category.setName("Default Category");
+                    default_category.setShortDescription("This is default category");
+                    categoryDao.insert(default_category);
+                }
             });
         }
     };

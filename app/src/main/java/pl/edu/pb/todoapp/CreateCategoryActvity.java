@@ -173,7 +173,7 @@ public class CreateCategoryActvity extends AppCompatActivity {
         String timeStamp = Long.toString(System.currentTimeMillis());
         String fileName = "PICTURE_" + timeStamp + "_";
         //TODO: poprawić to bo to jest depricated
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File storageDir = getFilesDir();//getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File picture = null;
         try {
             picture = File.createTempFile(fileName, ".jpg", storageDir);
@@ -300,18 +300,6 @@ public class CreateCategoryActvity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == REQUEST_LOAD_PICTURE && resultCode == RESULT_OK)
         {
-            //Uri pictureUri = data.getData();
-            /*currentCategory.setPhotoPath(pictureUri.getPath());
-            Bitmap picture = BitmapFactory.decodeFile(currentCategory.getPhotoPath());
-            categoryIcon.setImageBitmap(picture);*/
-            /*Bitmap picture;
-            currentCategory.setPhotoPath(pictureUri.toString());
-            try {
-                picture = BitmapFactory.decodeStream(getContentResolver().openInputStream(pictureUri));
-                categoryIcon.setImageBitmap(picture);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }*/
             Uri pictureUri = data.getData();//this one generates a correct path i guess
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
             Cursor cursor = getContentResolver().query(pictureUri,
@@ -329,23 +317,11 @@ public class CreateCategoryActvity extends AppCompatActivity {
 
             categoryIcon.setImageBitmap(BitmapFactory.decodeFile(path));
             currentCategory.setPhotoPath(path);
-            /*File file = new File(pictureUri.getPath());
-            final String[] split = file.getPath().split(":");
-            currentCategory.setPhotoPath(split[1]);
-            Bitmap picture = BitmapFactory.decodeFile(currentCategory.getPhotoPath());
-            categoryIcon.setImageBitmap(picture);*/
         }
         if(requestCode == REQUEST_CAPTURE_PICTURE && resultCode == RESULT_OK)
         {
             Bitmap picture = BitmapFactory.decodeFile(currentCategory.getPhotoPath());
             categoryIcon.setImageBitmap(picture);
-            /*Bitmap picture;
-            try {
-                picture = BitmapFactory.decodeStream(getContentResolver().openInputStream(Uri.parse(currentCategory.getPhotoPath())));
-                categoryIcon.setImageBitmap(picture);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }*/
             galleryAddPic();
         }
         super.onActivityResult(requestCode, resultCode, data);

@@ -112,7 +112,7 @@ public class TaskListFragment extends Fragment {
             }
         });
 
-        updateView();
+        setAdapter();
         return view;
     }
 
@@ -191,7 +191,7 @@ public class TaskListFragment extends Fragment {
     public void onResume()
     {   //TODO: moze poprawic to jakoś
         super.onResume();
-        updateView();
+        setAdapter();
     }
 
     @Override
@@ -230,7 +230,7 @@ public class TaskListFragment extends Fragment {
         }
     }
 
-    private void updateView()
+    private void setAdapter()
     {
         if(adapter == null)
         {

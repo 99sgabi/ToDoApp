@@ -57,4 +57,5 @@
     <string name="sort_date_title">Sortuj datą</string>
     <string name="toggle_switch_title">Przypomnij mi</string>
     <string name="notification_description">To jest kanał do zarządzania zadaniami</string>
+    <string name="task_details_category_label">Kategoria zadania: %s</string>
 </resources>

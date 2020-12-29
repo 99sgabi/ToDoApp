@@ -47,4 +47,6 @@ public interface TaskDao {
     @Query("SELECT * FROM tasks WHERE rowid = :rowId")
     public LiveData<Task> getLastTask(int rowId);
 
+    @Query("SELECT categories.name AS name FROM tasks,categories WHERE tasks.categoryId = categories.id AND tasks.id = :taskId")
+    public LiveData<String> getCategoryName(int taskId);
 }

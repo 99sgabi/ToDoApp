@@ -74,4 +74,9 @@ public class TaskViewModel extends AndroidViewModel {
     {
         return  taskRepository.loadMissedTasks(currentDateMillis);
     }
+
+    public LiveData<String> getCategoryName(int taskId)
+    {
+        return taskRepository.getCategoryName(taskId);
+    }
 }

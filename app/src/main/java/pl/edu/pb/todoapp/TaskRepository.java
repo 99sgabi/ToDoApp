@@ -66,6 +66,11 @@ public class TaskRepository {
         });
     }
 
+    LiveData<String> getCategoryName(int taskId)
+    {
+        return taskDao.getCategoryName(taskId);
+    }
+
     LiveData<Task> loadTask(int id)
     {
         return taskDao.loadTask(id);

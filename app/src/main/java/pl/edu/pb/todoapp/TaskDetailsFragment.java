@@ -19,13 +19,18 @@ import android.widget.ToggleButton;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+
+import java.util.List;
 
 public class TaskDetailsFragment extends Fragment {
 
     TextView dateField;
     CheckBox doneCheckBox;
     TextView nameField;
+    TextView categoryField;
     Task task;
     Chronometer chronometer;
     Switch notificationButton;
@@ -51,15 +56,9 @@ public class TaskDetailsFragment extends Fragment {
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
                     timeOfTheNotification, pendingIntent2);
         }
-        //LOLLIPOP 21 OR ABOVE
         else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(timeOfTheNotification, pendingIntent2);
             alarmManager.setAlarmClock(alarmClockInfo, pendingIntent2);
-        }
-        //KITKAT 19 OR ABOVE
-        else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP,
-                    timeOfTheNotification, pendingIntent2);
         }
     }
 
@@ -79,6 +78,7 @@ public class TaskDetailsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.details_task, container,false);
         nameField = view.findViewById(R.id.task_name);
+        categoryField = view.findViewById(R.id.task_category);
         dateField = view.findViewById(R.id.task_date);
         doneCheckBox = view.findViewById(R.id.task_done);
         chronometer = view.findViewById(R.id.chronometer);
@@ -86,16 +86,14 @@ public class TaskDetailsFragment extends Fragment {
         notificationButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                task.setNotifyUser(isChecked);
+                taskViewModel.update(task);
                 if(isChecked)
                 {
-                    task.setNotifyUser(true);
-                    taskViewModel.update(task);
                     scheduleNotification(getActivity().getApplicationContext(), task);
                 }
                 else
                 {
-                    task.setNotifyUser(false);
-                    taskViewModel.update(task);
                     cancelNotification(getActivity().getApplicationContext(), task);
                 }
             }
@@ -103,34 +101,24 @@ public class TaskDetailsFragment extends Fragment {
 
         taskViewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
 
+
         nameField.setInputType(InputType.TYPE_NULL);
         dateField.setInputType(InputType.TYPE_NULL);
-
-        String displayDate = "";
-        int dayOfMonth = task.getDate().getDate();
-        int month = task.getDate().getMonth() + 1;
-        int year = 1900 + task.getDate().getYear();
-
-        int hour = task.getDate().getHours();
-        int minutes = task.getDate().getMinutes();
-
-        displayDate += dayOfMonth + "/";
-        if(month < 10) displayDate +="0";
-        displayDate+= month + "/";
-        displayDate += year + "    ";
-
-        displayDate += hour + ":";
-        if(minutes<10)displayDate +="0";
-        displayDate += minutes;
 
         if(task.getNotifyUser())
             notificationButton.setChecked(true);
         else
             notificationButton.setChecked(false);
 
-        dateField.setText(displayDate);
+        dateField.setText(getTasksDateString());
         nameField.setText(task.getName());
         doneCheckBox.setChecked(task.getDone());
+        taskViewModel.getCategoryName(task.getId()).observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String categoryName) {
+                categoryField.setText(getResources().getString(R.string.task_details_category_label,categoryName));
+            }
+        });
 
         doneCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -176,5 +164,24 @@ public class TaskDetailsFragment extends Fragment {
         return taskDetailsFragment;
     }
 
+    private String getTasksDateString()
+    {
+        String displayDate = "";
+        int dayOfMonth = task.getDate().getDate();
+        int month = task.getDate().getMonth() + 1;
+        int year = 1900 + task.getDate().getYear();
 
+        int hour = task.getDate().getHours();
+        int minutes = task.getDate().getMinutes();
+
+        displayDate += dayOfMonth + "/";
+        if(month < 10) displayDate +="0";
+        displayDate+= month + "/";
+        displayDate += year + "    ";
+
+        displayDate += hour + ":";
+        if(minutes<10)displayDate +="0";
+        displayDate += minutes;
+        return displayDate;
+    }
 }

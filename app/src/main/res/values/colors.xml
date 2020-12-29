@@ -10,4 +10,6 @@
     <color name="highPriority">#d50000</color>
     <color name="mediumPriority">#ef9a9a</color>
     <color name="buttonBackground">#ffffff</color>
+    <color name="buttonDisabledText">#808080</color>
+    <color name="buttonDisabledBackground">#f8bbd0</color>
 </resources>

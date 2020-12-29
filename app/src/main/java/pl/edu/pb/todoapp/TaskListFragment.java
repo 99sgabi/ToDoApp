@@ -319,11 +319,32 @@ public class TaskListFragment extends Fragment {
             });
         }
 
+        private String getTasksDataString()
+        {
+            String displayDate = "";
+            int dayOfMonth = task.getDate().getDate();
+            int month = task.getDate().getMonth() + 1;
+            int year = 1900 + task.getDate().getYear();
+
+            int hour = task.getDate().getHours();
+            int minutes = task.getDate().getMinutes();
+
+            displayDate += dayOfMonth + "/";
+            if(month < 10) displayDate +="0";
+            displayDate+= month + "/";
+            displayDate += year + "    ";
+
+            displayDate += hour + ":";
+            if(minutes<10)displayDate +="0";
+            displayDate += minutes;
+            return displayDate;
+        }
+
         public void bind(Task task)
         {
             this.task = task;
             task_name.setText(task.getName());
-            task_date.setText(task.getDate().toString());
+            task_date.setText(getTasksDataString());
             task_priority.setText(task.getPriority().toString());
             if(task.getDone())
                 checkbox.setImageResource(R.drawable.ic_checkbox_checked);

@@ -81,21 +81,6 @@ public class CreateCategoryActvity extends AppCompatActivity {
         }
     }
 
-    /*private void setEnabledButtons()
-    {
-        if (ActivityCompat.checkSelfPermission(CreateCategoryActvity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            loadButton.setEnabled(false);
-        }
-        else
-            loadButton.setEnabled(true);
-
-        if (ActivityCompat.checkSelfPermission(CreateCategoryActvity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            capturePictureButton.setEnabled(false);
-        }
-        else
-            capturePictureButton.setEnabled(true);
-    }*/
-
 
     private Category prepareCategory(Category category)
     {
@@ -280,6 +265,10 @@ public class CreateCategoryActvity extends AppCompatActivity {
                 else
                 {
                     capturePictureButton.setEnabled(false);
+                    capturePictureButton.setBackgroundColor(
+                            getResources().getColor(R.color.buttonDisabledBackground));
+                    capturePictureButton.setTextColor(
+                            getResources().getColor(R.color.buttonDisabledText));
                     Snackbar.make(findViewById(R.id.main_layout),
                             getString(R.string.unable_to_capture_picture),
                             Snackbar.LENGTH_LONG).show();
@@ -294,6 +283,10 @@ public class CreateCategoryActvity extends AppCompatActivity {
                 else
                 {
                     loadButton.setEnabled(false);
+                    loadButton.setBackgroundColor(
+                            getResources().getColor(R.color.buttonDisabledBackground));
+                    loadButton.setTextColor(
+                            getResources().getColor(R.color.buttonDisabledText));
                     Snackbar.make(findViewById(R.id.main_layout),
                         getString(R.string.unable_to_load_picture),
                         Snackbar.LENGTH_LONG).show();

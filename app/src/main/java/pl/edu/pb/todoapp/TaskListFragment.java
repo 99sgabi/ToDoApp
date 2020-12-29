@@ -30,6 +30,8 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.List;
 
 import lombok.NonNull;
+import pl.edu.pb.todoapp.database.Task;
+import pl.edu.pb.todoapp.database.TaskViewModel;
 
 public class TaskListFragment extends Fragment {
 

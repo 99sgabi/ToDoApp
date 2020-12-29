@@ -1,4 +1,4 @@
-package pl.edu.pb.todoapp;
+package pl.edu.pb.todoapp.database;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -9,6 +9,8 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import java.util.List;
+
+import pl.edu.pb.todoapp.database.Category;
 
 @Dao
 public interface CategoryDao {

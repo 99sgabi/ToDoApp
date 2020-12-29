@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 
-import java.util.UUID;
+import pl.edu.pb.todoapp.database.Task;
 
 public class TaskDetailsActivity extends SingleFragmentActivity {
 

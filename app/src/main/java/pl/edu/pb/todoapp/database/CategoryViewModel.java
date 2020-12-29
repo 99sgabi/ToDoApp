@@ -1,4 +1,4 @@
-package pl.edu.pb.todoapp;
+package pl.edu.pb.todoapp.database;
 
 import android.app.Application;
 

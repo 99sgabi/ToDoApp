@@ -1,4 +1,4 @@
-package pl.edu.pb.todoapp;
+package pl.edu.pb.todoapp.database;
 
 import android.content.Context;
 
@@ -9,7 +9,6 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 

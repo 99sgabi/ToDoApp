@@ -1,10 +1,9 @@
-package pl.edu.pb.todoapp;
+package pl.edu.pb.todoapp.database;
 
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
-import java.util.Date;
 import java.util.List;
 
 public class CategoryRepository {

@@ -1,4 +1,4 @@
-package pl.edu.pb.todoapp;
+package pl.edu.pb.todoapp.weather;
 
 import retrofit2.Retrofit;
 import okhttp3.OkHttpClient;

@@ -1,4 +1,4 @@
-package pl.edu.pb.todoapp;
+package pl.edu.pb.todoapp.database;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -8,9 +8,6 @@ import androidx.room.TypeConverter;
 
 import java.io.Serializable;
 import java.util.Date;
-
-import dalvik.annotation.TestTarget;
-
 
 
 @Entity(tableName = "tasks",

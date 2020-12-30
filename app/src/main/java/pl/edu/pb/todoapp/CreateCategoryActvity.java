@@ -318,7 +318,11 @@ public class CreateCategoryActvity extends AppCompatActivity {
         {
             Bitmap picture = BitmapFactory.decodeFile(currentCategory.getPhotoPath());
             categoryIcon.setImageBitmap(picture);
-            MediaStore.Images.Media.insertImage(getContentResolver(), picture, Long.toString(System.currentTimeMillis()), Long.toString(System.currentTimeMillis()));
+            MediaStore.Images.Media.insertImage(
+                    getContentResolver(),
+                    picture,
+                    Long.toString(System.currentTimeMillis()),
+                    Long.toString(System.currentTimeMillis()));
             //galleryAddPic();
         }
         super.onActivityResult(requestCode, resultCode, data);

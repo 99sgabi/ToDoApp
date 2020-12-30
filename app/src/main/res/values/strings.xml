@@ -60,4 +60,6 @@
     <string name="no_tasks_message">Create something to use our app :D</string>
     <string name="category_list_cat_name">Name: %s</string>
     <string name="category_list_cat_description">Description: %s</string>
+    <string name="default_category_name">Default category</string>
+    <string name="default_category_description">This is default category</string>
 </resources>

@@ -61,4 +61,6 @@
     <string name="no_tasks_message">Stwórz coś, żeby korzystać z aplikacji :D</string>
     <string name="category_list_cat_name">Nazwa: %s</string>
     <string name="category_list_cat_description">Opis: %s</string>
+    <string name="default_category_name">Domyślna kategoria</string>
+    <string name="default_category_description">To jest domyślna kategoria</string>
 </resources>

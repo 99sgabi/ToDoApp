@@ -166,7 +166,7 @@ public class TaskListFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                //TODO: ZAPYTAC O TEN LIFCYCLE I DLACZEGO TAKSIE TO ROBI DZIWNIE 
+                //TODO: ZAPYTAC O TEN LIFCYCLE I DLACZEGO TAKSIE TO ROBI DZIWNIE
                 taskViewModel.findTasksWithCategories(query).observe(lifecycleOwner, new Observer<List<Task>>() {
                     @Override
                     public void onChanged(List<Task> tasks) {

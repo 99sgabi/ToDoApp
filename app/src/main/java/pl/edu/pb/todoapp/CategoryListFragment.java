@@ -81,6 +81,16 @@ public class CategoryListFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if(adapter == null)
+        {
+            adapter = new CategoryAdapter();
+            recyclerView.setAdapter(adapter);
+        }
+    }
+
+    @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.categories_menu, menu);
@@ -117,12 +127,12 @@ public class CategoryListFragment extends Fragment {
         {
             if(resultCode == Activity.RESULT_OK) {
                 Snackbar.make(getActivity().findViewById(R.id.coordinator_layout),
-                        getString(R.string.task_edit_was_successful),
+                        getString(R.string.category_edit_was_successful),
                         Snackbar.LENGTH_LONG).show();
             }
             else
                 Snackbar.make(getActivity().findViewById(R.id.coordinator_layout),
-                        getString(R.string.task_edit_was_unsuccessful),
+                        getString(R.string.category_edit_was_unsuccessful),
                         Snackbar.LENGTH_LONG).show();
         }
     }

@@ -50,7 +50,9 @@ public class CreateCategoryActvity extends AppCompatActivity {
 
     public void checkStoragePermissions()
     {
-        if (ActivityCompat.checkSelfPermission(CreateCategoryActvity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(
+                CreateCategoryActvity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+        {
             loadButton.setEnabled(false);
             ActivityCompat.requestPermissions(
                     CreateCategoryActvity.this,
@@ -65,7 +67,9 @@ public class CreateCategoryActvity extends AppCompatActivity {
 
     public void checkCameraPermissions()
     {
-        if (ActivityCompat.checkSelfPermission(CreateCategoryActvity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(
+                CreateCategoryActvity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+        {
             capturePictureButton.setEnabled(false);
             ActivityCompat.requestPermissions(
                     CreateCategoryActvity.this,
@@ -77,10 +81,8 @@ public class CreateCategoryActvity extends AppCompatActivity {
         }
     }
 
-
     private Category prepareCategory(Category category)
     {
-        //add icon
         String name = nameEditText.getText().toString();
         String description = descriptionEditText.getText().toString();
 
@@ -168,7 +170,6 @@ public class CreateCategoryActvity extends AppCompatActivity {
     {
         String timeStamp = Long.toString(System.currentTimeMillis());
         String fileName = "PICTURE_" + timeStamp + "_";
-        //TODO: poprawić to bo to jest depricated
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);//getFilesDir();
         File picture = null;
         try {

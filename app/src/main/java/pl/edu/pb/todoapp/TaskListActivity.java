@@ -59,7 +59,8 @@ public class TaskListActivity extends SingleFragmentActivity {
     private void findLocation()
     {
         //checking permissions
-        if(ActivityCompat.checkSelfPermission(TaskListActivity.this,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+        if(ActivityCompat.checkSelfPermission(
+                TaskListActivity.this,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
         {
             //when permission is granted
             fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {

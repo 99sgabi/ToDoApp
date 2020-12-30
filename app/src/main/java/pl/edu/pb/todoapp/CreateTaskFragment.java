@@ -188,7 +188,6 @@ public class CreateTaskFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         categoryIdList = new ArrayList<>();
-        //categoryNameList = new ArrayList<>();
         taskViewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
         Intent startngIntent = getActivity().getIntent();
         final int id = startngIntent.getIntExtra(TaskListFragment.KEY_EXTRA_TASK_ID, -1);

@@ -30,6 +30,7 @@ public abstract class TaskDatabase extends RoomDatabase {
             {
                 if(DATABASE_INSTANCE == null)
                 {
+                    //creates the instance of the database
                     DATABASE_INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             TaskDatabase.class, "to_do_db").addCallback(initialDataCallBack).build();
                 }

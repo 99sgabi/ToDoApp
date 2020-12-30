@@ -6,6 +6,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 
 import java.util.List;
@@ -37,4 +38,8 @@ public interface CategoryDao {
 
     @Query("SELECT COUNT(*) FROM categories WHERE name LIKE 'Default Category'")
     public int countDefaultCategories();
+
+    @Transaction
+    @Query("SELECT * FROM categories WHERE id = :id")
+    public LiveData<CategoryWithTasks> getTasksListForCategory(int id);
 }

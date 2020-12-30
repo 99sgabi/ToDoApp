@@ -10,11 +10,11 @@ import java.io.Serializable;
 import java.util.Date;
 
 
-@Entity(tableName = "tasks",
+@Entity(tableName = "tasks"/*,
         foreignKeys = @ForeignKey(entity = Category.class,
                 parentColumns = "id",
                 childColumns = "categoryId",
-                onDelete = ForeignKey.CASCADE))
+                onDelete = ForeignKey.CASCADE)*/)
 public class Task implements Serializable{
     @PrimaryKey(autoGenerate = true)
     private Integer id;

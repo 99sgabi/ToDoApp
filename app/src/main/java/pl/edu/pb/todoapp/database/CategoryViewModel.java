@@ -34,6 +34,11 @@ public class CategoryViewModel extends AndroidViewModel {
         return categoryRepository.loadCategoriesByDescription(partOfDescription);
     }
 
+    public LiveData<CategoryWithTasks> findTasksListForCategory(int id)
+    {
+        return categoryRepository.loadTasksListForCategory(id);
+    }
+
     public void insert(Category category)
     {
         categoryRepository.insert(category);

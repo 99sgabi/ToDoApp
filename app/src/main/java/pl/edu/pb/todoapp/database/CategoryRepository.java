@@ -17,6 +17,11 @@ public class CategoryRepository {
         categories = categoryDao.loadCategories();
     }
 
+    LiveData<CategoryWithTasks> loadTasksListForCategory(int id)
+    {
+        return categoryDao.getTasksListForCategory(id);
+    }
+
     LiveData<Category> loadCategoryById(int id)
     {
         return categoryDao.loadCategory(id);

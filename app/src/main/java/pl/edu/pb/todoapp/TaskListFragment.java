@@ -30,6 +30,8 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.List;
 
 import lombok.NonNull;
+import pl.edu.pb.todoapp.database.CategoryViewModel;
+import pl.edu.pb.todoapp.database.CategoryWithTasks;
 import pl.edu.pb.todoapp.database.Task;
 import pl.edu.pb.todoapp.database.TaskViewModel;
 
@@ -42,6 +44,7 @@ public class TaskListFragment extends Fragment {
     public static String KEY_TASK = "extraID";
     public int categoryId = -1;//when it starts from category taskListActivity then id > 0 else -1
     private TaskViewModel taskViewModel;
+    private CategoryViewModel categoryViewModel;
     private FloatingActionButton addButton;
     private LifecycleOwner lifecycleOwner = this;
     public static final int REQUEST_CODE_TASK_CREATE = 2;
@@ -92,17 +95,26 @@ public class TaskListFragment extends Fragment {
 
     private void loadCategoryTasks()
     {
-        taskViewModel.findCategoryTasks(categoryId).observe(this, new Observer<List<Task>>() {
+        categoryViewModel = ViewModelProviders.of(this).get(CategoryViewModel.class);
+        categoryViewModel.findTasksListForCategory(categoryId).observe(this, new Observer<CategoryWithTasks>() {
+            @Override
+            public void onChanged(CategoryWithTasks category) {
+                adapter.setTasks(category.tasks);
+                checkIfThereAreTasks(category.tasks.size());
+            }
+        });
+        /*taskViewModel.findCategoryTasks(categoryId).observe(this, new Observer<List<Task>>() {
             @Override
             public void onChanged(List<Task> tasks) {
                 adapter.setTasks(tasks);
                 checkIfThereAreTasks(tasks.size());
             }
-        });
+        });*/
     }
 
     private void loadMissedTasks()
     {
+        taskViewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
         taskViewModel.findMissedTasks(System.currentTimeMillis()).observe(this, new Observer<List<Task>>() {
             @Override
             public void onChanged(List<Task> tasks) {
@@ -120,8 +132,8 @@ public class TaskListFragment extends Fragment {
             sortedByDate = savedInstanceState.getBoolean(KEY_SORT, true);
             missedTasks = savedInstanceState.getBoolean(KEY_MISSED_TASKS, false);
         }
-
         taskViewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
+
         if(categoryId != -1)
             loadCategoryTasks();
         else
@@ -151,7 +163,6 @@ public class TaskListFragment extends Fragment {
                 startActivityForResult(intent, REQUEST_CODE_TASK_CREATE);
             }
         });
-
         setAdapter();
         return view;
     }

@@ -17,6 +17,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
@@ -168,7 +169,7 @@ public class CreateCategoryActvity extends AppCompatActivity {
         String timeStamp = Long.toString(System.currentTimeMillis());
         String fileName = "PICTURE_" + timeStamp + "_";
         //TODO: poprawić to bo to jest depricated
-        File storageDir = getFilesDir();//getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);//getFilesDir();
         File picture = null;
         try {
             picture = File.createTempFile(fileName, ".jpg", storageDir);
@@ -317,7 +318,8 @@ public class CreateCategoryActvity extends AppCompatActivity {
         {
             Bitmap picture = BitmapFactory.decodeFile(currentCategory.getPhotoPath());
             categoryIcon.setImageBitmap(picture);
-            galleryAddPic();
+            MediaStore.Images.Media.insertImage(getContentResolver(), picture, Long.toString(System.currentTimeMillis()), Long.toString(System.currentTimeMillis()));
+            //galleryAddPic();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

@@ -100,7 +100,6 @@ public class TaskDetailsFragment extends Fragment {
 
         taskViewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
 
-
         nameField.setInputType(InputType.TYPE_NULL);
         dateField.setInputType(InputType.TYPE_NULL);
 
@@ -127,6 +126,7 @@ public class TaskDetailsFragment extends Fragment {
                 taskViewModel.update(task);
             }
         });
+        setVisibilityForChronometer();
         return view;
     }
 
@@ -182,5 +182,13 @@ public class TaskDetailsFragment extends Fragment {
         if(minutes<10)displayDate +="0";
         displayDate += minutes;
         return displayDate;
+    }
+
+    private void setVisibilityForChronometer()
+    {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
+        {
+            chronometer.setVisibility(View.GONE);
+        }
     }
 }

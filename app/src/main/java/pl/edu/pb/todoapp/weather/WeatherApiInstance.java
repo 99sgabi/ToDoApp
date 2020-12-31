@@ -12,8 +12,10 @@ public class WeatherApiInstance {
 
     public static Retrofit getInstance()
     {
+        //shows data in the logcat, logs HTTP request and response data
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        //this helps to deserialize the data
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
                 .build();

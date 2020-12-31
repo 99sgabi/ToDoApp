@@ -81,7 +81,12 @@ public class TaskListActivity extends SingleFragmentActivity {
         }
         else
         {
-            ActivityCompat.requestPermissions(TaskListActivity.this , new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+            ActivityCompat.requestPermissions(TaskListActivity.this ,
+                    new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                    },
+                    44);
         }
     }
 

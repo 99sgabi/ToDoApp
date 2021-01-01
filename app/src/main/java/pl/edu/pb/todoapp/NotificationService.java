@@ -3,6 +3,7 @@ package pl.edu.pb.todoapp;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.PendingIntent;
+import androidx.core.app.TaskStackBuilder;
 import android.content.Intent;
 import android.content.Context;
 import android.os.Build;
@@ -32,8 +33,12 @@ public class NotificationService extends IntentService {
     }
 
     private void createNotification(String task_name, int task_id) {
-        Intent notifyIntent = new Intent(this, TaskListActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 2, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent notifyIntent = new Intent(this, TaskDetailsActivity.class);
+        notifyIntent.putExtra(TaskListFragment.KEY_EXTRA_TASK_ID, task_id);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addNextIntentWithParentStack(notifyIntent);
+        PendingIntent pendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                //PendingIntent.getActivity(this, 2, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)

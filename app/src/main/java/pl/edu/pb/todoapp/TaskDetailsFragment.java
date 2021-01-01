@@ -31,14 +31,56 @@ public class TaskDetailsFragment extends Fragment {
     TextView nameField;
     TextView categoryField;
     Task task;
+    int taskID;
+    boolean isChronometerRunning;
     Chronometer chronometer;
     Switch notificationButton;
     private TaskViewModel taskViewModel;
     public static String ARG_TASK_ID = "argTaskID";
+    public static String KEY_TASK = "TasksSerializable";
 
     private void setTask(Task t)
     {
         task = t;
+    }
+
+    private void chronometerManagement()
+    {
+        if(!isChronometerRunning)
+        {
+            chronometer.setBase(task.getDate().getTime() - System.currentTimeMillis());
+            chronometer.start();
+            isChronometerRunning = true;
+        }
+    }
+
+    private void setUpFields()
+    {
+        if(task.getNotifyUser())
+            notificationButton.setChecked(true);
+        else
+            notificationButton.setChecked(false);
+
+        dateField.setText(getTasksDateString());
+        nameField.setText(task.getName());
+        doneCheckBox.setChecked(task.getDone());
+        chronometerManagement();
+    }
+
+    private void setTask(int id)
+    {
+        taskViewModel.findTaskById(id).observe(getViewLifecycleOwner(), new Observer<Task>() {
+            @Override
+            public void onChanged(Task t) {
+                task = t;
+                setUpFields();
+            }
+        });
+    }
+
+    private void setTaskID(int taskID)
+    {
+        this.taskID = taskID;
     }
 
     public static void scheduleNotification(Context context, Task task) {
@@ -65,9 +107,6 @@ public class TaskDetailsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
-        //UUID taskId = (UUID)getArguments().getSerializable(ARG_TASK_ID);
-        //this.task = TaskStorage.getInstance().getTask(taskId);
     }
 
     @Override
@@ -99,19 +138,11 @@ public class TaskDetailsFragment extends Fragment {
         });
 
         taskViewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
-
+        setTask(taskID);
         nameField.setInputType(InputType.TYPE_NULL);
         dateField.setInputType(InputType.TYPE_NULL);
 
-        if(task.getNotifyUser())
-            notificationButton.setChecked(true);
-        else
-            notificationButton.setChecked(false);
-
-        dateField.setText(getTasksDateString());
-        nameField.setText(task.getName());
-        doneCheckBox.setChecked(task.getDone());
-        taskViewModel.getCategoryName(task.getId()).observe(getViewLifecycleOwner(), new Observer<String>() {
+        taskViewModel.getCategoryName(taskID).observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String categoryName) {
                 categoryField.setText(getResources().getString(R.string.task_details_category_label,categoryName));
@@ -141,25 +172,33 @@ public class TaskDetailsFragment extends Fragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        chronometer.setBase(task.getDate().getTime() - System.currentTimeMillis());
-        chronometer.start();
+    public void onResume() {
+        super.onResume();
+        if(task != null)
+            chronometerManagement();
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onPause() {
+        super.onPause();
         chronometer.stop();
+        isChronometerRunning = false;
     }
 
-    public static TaskDetailsFragment newInstance(Task task)
+    /*public static TaskDetailsFragment newInstance(Task task)
     {
         //Bundle bundle= new Bundle();
         //bundle.putSerializable(ARG_TASK_ID, taskId);
         TaskDetailsFragment taskDetailsFragment = new TaskDetailsFragment();
         taskDetailsFragment.setTask(task);
         //taskDetailsFragment.setArguments(bundle);
+        return taskDetailsFragment;
+    }*/
+
+    public static TaskDetailsFragment newInstance(int taskID)
+    {
+        TaskDetailsFragment taskDetailsFragment = new TaskDetailsFragment();
+        taskDetailsFragment.setTaskID(taskID);
         return taskDetailsFragment;
     }
 

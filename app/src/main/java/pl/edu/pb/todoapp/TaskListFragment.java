@@ -405,9 +405,9 @@ public class TaskListFragment extends Fragment {
         public void onClick(View v) {
             Intent intent = new Intent(getActivity(), TaskDetailsActivity.class);
             intent.putExtra(KEY_EXTRA_TASK_ID, task.getId());
-            Bundle bundle = new Bundle();
+            /*Bundle bundle = new Bundle();
             bundle.putSerializable(KEY_TASK,task);
-            intent.putExtra(KEY_TASK,bundle);
+            intent.putExtra(KEY_TASK,bundle);*/
             startActivity(intent);
         }
 

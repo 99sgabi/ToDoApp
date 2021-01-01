@@ -49,10 +49,10 @@ public class NotificationService extends IntentService {
         builder.setVisibility(Notification.VISIBILITY_PUBLIC);
         builder.setPriority(Notification.PRIORITY_DEFAULT);
 
-        Notification notificationCompat = builder.build();
+        Notification notification = builder.build();
         NotificationManagerCompat managerCompat = NotificationManagerCompat.from(this);
         //id of the notification is equal to the id of the task
-        managerCompat.notify(task_id, notificationCompat);
+        managerCompat.notify(task_id, notification);
     }
 
 }

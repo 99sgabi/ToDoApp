@@ -58,4 +58,10 @@ public class CategoryViewModel extends AndroidViewModel {
     {
         return categoryRepository.loadCategoryById(id);
     }
+
+    public LiveData<Integer> getDefaultCategoryId()
+    {
+        return categoryRepository.getDefaultCategoryId();
+    }
+
 }

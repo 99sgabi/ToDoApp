@@ -39,7 +39,14 @@ public interface CategoryDao {
     @Query("SELECT COUNT(*) FROM categories WHERE name LIKE 'Default Category'")
     public int countDefaultCategories();
 
+    @Query("SELECT id FROM categories WHERE name LIKE 'Default Category'")
+    public LiveData<Integer> getDefaultCategoryId();
+
     @Transaction
     @Query("SELECT * FROM categories WHERE id = :id")
     public LiveData<CategoryWithTasks> getTasksListForCategory(int id);
+
+    @Transaction
+    @Query("UPDATE tasks SET categoryId = 0 WHERE categoryId = :currentCategoryId")
+    public void updateTasksCategoryToDefault(int currentCategoryId);
 }

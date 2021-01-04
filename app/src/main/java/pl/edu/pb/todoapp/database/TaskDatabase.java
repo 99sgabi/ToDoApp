@@ -39,6 +39,25 @@ public abstract class TaskDatabase extends RoomDatabase {
     }
 
     private static RoomDatabase.Callback initialDataCallBack = new RoomDatabase.Callback() {
+
+        @Override
+        public void onCreate(@NonNull SupportSQLiteDatabase db) {
+            super.onCreate(db);
+            databaseWriterExecutor.execute( () -> {
+                CategoryDao categoryDao = DATABASE_INSTANCE.categoryDao();
+                if(categoryDao.countDefaultCategories() < 1)
+                {
+                    Category default_category = new Category();
+                    default_category.setName("Default Category");
+                    default_category.setShortDescription("This is default category");
+                    default_category.setId(0);
+                    categoryDao.insert(default_category);
+                }
+            });
+        }
+    };
+
+    /*private static RoomDatabase.Callback initialDataCallBack = new RoomDatabase.Callback() {
         @Override
         public void onOpen(@NonNull SupportSQLiteDatabase db) {
             super.onOpen(db);
@@ -53,5 +72,5 @@ public abstract class TaskDatabase extends RoomDatabase {
                 }
             });
         }
-    };
+    };*/
 }

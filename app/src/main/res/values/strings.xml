@@ -62,4 +62,5 @@
     <string name="category_list_cat_description">Description: %s</string>
     <string name="default_category_name">Default category</string>
     <string name="default_category_description">This is default category</string>
+    <string name="message_default_cateogry">You cannot delete default category</string>
 </resources>

@@ -63,4 +63,5 @@
     <string name="category_list_cat_description">Opis: %s</string>
     <string name="default_category_name">Domyślna kategoria</string>
     <string name="default_category_description">To jest domyślna kategoria</string>
+    <string name="message_default_cateogry">Nie możesz usunąć kategori domyślnej</string>
 </resources>

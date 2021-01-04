@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -148,7 +149,10 @@ public class CategoryListFragment extends Fragment {
                 switch(item.getItemId())
                 {
                     case R.id.menu_delete_task:
-                        showDeleteAlert(category);
+                        if(category.getId() == 0)
+                            Toast.makeText(getContext(), R.string.message_default_cateogry,Toast.LENGTH_LONG).show();
+                        else
+                            showDeleteAlert(category);
                         return true;
                     case R.id.menu_edit_task:
                         Intent editIntent = new Intent(getActivity(), CreateCategoryActvity.class);

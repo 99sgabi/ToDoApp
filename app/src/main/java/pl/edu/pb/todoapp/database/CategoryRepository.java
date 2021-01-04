@@ -55,8 +55,17 @@ public class CategoryRepository {
     }
 
     void delete(Category category){
+        if(category.getId() == 0) return;
         TaskDatabase.databaseWriterExecutor.execute(() -> {
+            categoryDao.updateTasksCategoryToDefault(
+                    category.getId());
             categoryDao.delete(category);
         });
     }
+
+    LiveData<Integer> getDefaultCategoryId()
+    {
+        return categoryDao.getDefaultCategoryId();
+    }
+
 }

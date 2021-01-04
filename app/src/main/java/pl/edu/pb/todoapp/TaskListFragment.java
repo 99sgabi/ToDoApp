@@ -394,11 +394,13 @@ public class TaskListFragment extends Fragment {
             this.task = task;
             task_name.setText(task.getName());
             task_date.setText(getTasksDataString());
-            task_priority.setText(task.getPriority().toString());
+            task_priority.setText(
+                    getString(task.getPriority().getRId()));
             if(task.getDone())
                 checkbox.setImageResource(R.drawable.ic_checkbox_checked);
             else
                 checkbox.setImageResource(R.drawable.ic_checkbox_unchecked);
+
         }
 
         @Override

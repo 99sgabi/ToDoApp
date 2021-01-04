@@ -64,4 +64,6 @@
     <string name="default_category_name">Domyślna kategoria</string>
     <string name="default_category_description">To jest domyślna kategoria</string>
     <string name="message_default_cateogry">Nie możesz usunąć kategori domyślnej</string>
+    <string name="message_temperature_warm">Twoja motywacja dzisiaj podskoczy :D</string>
+    <string name="message_temperature_rest">Dzisiaj możesz się czuć leniwie</string>
 </resources>

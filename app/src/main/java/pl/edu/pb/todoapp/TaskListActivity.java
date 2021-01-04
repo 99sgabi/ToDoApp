@@ -8,8 +8,13 @@ import androidx.fragment.app.Fragment;
 import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,10 +38,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TaskListActivity extends SingleFragmentActivity {
+public class TaskListActivity extends SingleFragmentActivity implements SensorEventListener{
     private ClosesedCity closesedCity;
-    private TextView messageBox;
+    private TextView temperatureMessageBox;
+    private TextView locationMessageBox;
     private FusedLocationProviderClient fusedLocationProviderClient;
+    private SensorManager sensorManager;
+    private Sensor temperatureSensor;
     public static String CHANNEL_NOTIFICATION_ID = "channel notification id";
 
     private void createNotificationChannel() {
@@ -148,11 +156,11 @@ public class TaskListActivity extends SingleFragmentActivity {
 
         int maxValue = Math.max(Math.max(categoryLightlymotivatedCount,categoryMotivatedCount),categoryUnmotivatedCount);
         if(categoryLightlymotivatedCount == maxValue)
-            messageBox.setText(getString(R.string.lightly_motivated_message));
+            locationMessageBox.setText(getString(R.string.lightly_motivated_message));
         else if(categoryMotivatedCount == maxValue)
-            messageBox.setText(getString(R.string.motivated_message));
+            locationMessageBox.setText(getString(R.string.motivated_message));
         else
-            messageBox.setText(getString(R.string.unmotivated_message));
+            locationMessageBox.setText(getString(R.string.unmotivated_message));
     }
 
     private void showMessage()
@@ -176,13 +184,37 @@ public class TaskListActivity extends SingleFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         startUp();
         createNotificationChannel();
         setContentView(R.layout.task_list_activity);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        messageBox = findViewById(R.id.message_for_the_day);
+        locationMessageBox = findViewById(R.id.message_for_the_day);
+        temperatureMessageBox = findViewById(R.id.message_for_the_day_temp);
+
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        temperatureSensor = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
+
         findLocation();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if(temperatureSensor != null)
+        {
+            sensorManager.registerListener(this, temperatureSensor,
+                        SensorManager.SENSOR_DELAY_NORMAL);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(temperatureSensor != null)
+        {
+            sensorManager.unregisterListener(this);
+        }
     }
 
     @Override
@@ -193,5 +225,25 @@ public class TaskListActivity extends SingleFragmentActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        int sensorType = event.sensor.getType();
+        float currentTemperature = event.values[0];
+        switch (sensorType)
+        {
+            case Sensor.TYPE_AMBIENT_TEMPERATURE:
+                if(currentTemperature > 15.0 && currentTemperature < 22.5)
+                    temperatureMessageBox.setText(R.string.message_temperature_warm);
+                else
+                    temperatureMessageBox.setText(R.string.message_temperature_rest);
+                break;
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 }

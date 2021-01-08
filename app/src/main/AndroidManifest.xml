@@ -23,7 +23,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".CategoryTasksListActivity"></activity>
+        <service
+            android:name=".database.DeleteOutdatedTaskService"
+            android:exported="false"></service>
+
+        <activity android:name=".CategoryTasksListActivity" />
 
         <receiver
             android:name=".NotificationReceiver"
@@ -48,8 +52,9 @@
         <activity android:name=".CategoryListActivity" />
         <activity android:name=".CreateCategoryActvity" />
         <activity android:name=".CreateTaskActivity" />
-        <activity android:name=".TaskDetailsActivity"
-                android:parentActivityName=".TaskListActivity"/>
+        <activity
+            android:name=".TaskDetailsActivity"
+            android:parentActivityName=".TaskListActivity" />
         <activity android:name=".TaskListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -83,4 +83,9 @@ public class TaskViewModel extends AndroidViewModel {
     public LiveData<List<Task>> findCategoryTasks(int categoryId) {
         return taskRepository.loadCategoryTasks(categoryId);
     }
+
+    public void deleteOutdatedTasks(long deleteTime)
+    {
+        taskRepository.deleteOutdatedTasks(deleteTime);
+    }
 }

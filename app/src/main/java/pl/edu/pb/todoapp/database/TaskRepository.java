@@ -89,4 +89,11 @@ public class TaskRepository {
     public LiveData<List<Task>> loadCategoryTasks(int categoryId) {
         return taskDao.loadCategoryTasks(categoryId);
     }
+
+    public void deleteOutdatedTasks(long deleteTime)
+    {
+        TaskDatabase.databaseWriterExecutor.execute(() -> {
+            taskDao.deleteOutdatedTasks(deleteTime);
+        });
+    }
 }

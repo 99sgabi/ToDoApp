@@ -55,6 +55,7 @@ public class TaskListFragment extends Fragment {
     private boolean missedTasks;
     private static final String KEY_SORT="sort";
     private static final String KEY_MISSED_TASKS="missedTasks";
+    private static final int DELETE_TIME = 3600001;
 
     public void setCategoryId(int categoryId)
     {
@@ -142,6 +143,7 @@ public class TaskListFragment extends Fragment {
             missedTasks = savedInstanceState.getBoolean(KEY_MISSED_TASKS, false);
         }
         taskViewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
+        taskViewModel.deleteOutdatedTasks(System.currentTimeMillis() - DELETE_TIME);
 
         if(categoryId != -1)
             loadCategoryTasks();

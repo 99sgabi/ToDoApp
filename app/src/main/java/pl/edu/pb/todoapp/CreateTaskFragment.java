@@ -272,7 +272,7 @@ public class CreateTaskFragment extends Fragment {
                 Calendar calendar = Calendar.getInstance();
                 int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
                 int mins = calendar.get(Calendar.MINUTE);
-                timePicker = new TimePickerDialog(getActivity(), 2,
+                timePicker = new TimePickerDialog(getActivity(), 3,
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {

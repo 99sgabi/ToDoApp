@@ -19,6 +19,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -47,6 +48,7 @@ public class TaskListFragment extends Fragment {
     private CategoryViewModel categoryViewModel;
     private FloatingActionButton addButton;
     private LifecycleOwner lifecycleOwner = this;
+    private LiveData<List<Task>> currentData;
     public static final int REQUEST_CODE_TASK_CREATE = 2;
     public static final int REQUEST_CODE_TASK_EDIT = 3;
     private boolean sortedByDate = true;
@@ -71,9 +73,19 @@ public class TaskListFragment extends Fragment {
         }
     }
 
+    private void deleteObserver()
+    {
+        if(currentData != null)
+        {
+            currentData.removeObservers(lifecycleOwner);
+        }
+    }
+
     private void loadAllTaskByDate()
     {
-        taskViewModel.findAllTasks().observe(this, new Observer<List<Task>>() {
+        deleteObserver();
+        currentData = taskViewModel.findAllTasks();
+        currentData.observe(this, new Observer<List<Task>>() {
             @Override
             public void onChanged(List<Task> tasks) {
                 adapter.setTasks(tasks);
@@ -84,7 +96,9 @@ public class TaskListFragment extends Fragment {
 
     private void loadAllTaskBYPriority()
     {
-        taskViewModel.findTasksOrderByPriority().observe(this, new Observer<List<Task>>() {
+        deleteObserver();
+        currentData = taskViewModel.findTasksOrderByPriority();
+        currentData.observe(this, new Observer<List<Task>>() {
             @Override
             public void onChanged(List<Task> tasks) {
                 adapter.setTasks(tasks);
@@ -93,6 +107,7 @@ public class TaskListFragment extends Fragment {
         });
     }
 
+    //this is used in categoryView and doesnt need to clean up observers
     private void loadCategoryTasks()
     {
         categoryViewModel = ViewModelProviders.of(this).get(CategoryViewModel.class);
@@ -103,19 +118,13 @@ public class TaskListFragment extends Fragment {
                 checkIfThereAreTasks(category.tasks.size());
             }
         });
-        /*taskViewModel.findCategoryTasks(categoryId).observe(this, new Observer<List<Task>>() {
-            @Override
-            public void onChanged(List<Task> tasks) {
-                adapter.setTasks(tasks);
-                checkIfThereAreTasks(tasks.size());
-            }
-        });*/
     }
 
     private void loadMissedTasks()
     {
-        taskViewModel = ViewModelProviders.of(this).get(TaskViewModel.class);
-        taskViewModel.findMissedTasks(System.currentTimeMillis()).observe(this, new Observer<List<Task>>() {
+        deleteObserver();
+        currentData = taskViewModel.findMissedTasks(System.currentTimeMillis());
+        currentData.observe(this, new Observer<List<Task>>() {
             @Override
             public void onChanged(List<Task> tasks) {
                 adapter.setTasks(tasks);
@@ -171,6 +180,12 @@ public class TaskListFragment extends Fragment {
     public void onCreateOptionsMenu(@androidx.annotation.NonNull Menu menu, @androidx.annotation.NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.tasks_menu, menu);
+        MenuItem sortOption = menu.findItem(R.id.sort_option);
+        sortOption.setVisible(!missedTasks);
+        MenuItem missedTaskOption = menu.findItem(R.id.missed_tasks);
+        if(missedTasks) {
+            missedTaskOption.setTitle(getString(R.string.show_all_tasks));
+        }
 
         MenuItem searchItem = menu.findItem(R.id.menu_item_search);
         final SearchView searchView = (SearchView) searchItem.getActionView();
@@ -178,7 +193,9 @@ public class TaskListFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 //TODO: ZAPYTAC O TEN LIFCYCLE I DLACZEGO TAKSIE TO ROBI DZIWNIE
-                taskViewModel.findTasksWithCategories(query).observe(lifecycleOwner, new Observer<List<Task>>() {
+                deleteObserver();
+                currentData = taskViewModel.findTasksWithCategories(query);
+                currentData.observe(lifecycleOwner, new Observer<List<Task>>() {
                     @Override
                     public void onChanged(List<Task> tasks) {
                         adapter.setTasks(tasks);
@@ -219,17 +236,16 @@ public class TaskListFragment extends Fragment {
                 loadAllTaskByDate();
                 return true;
             case R.id.missed_tasks:
-                if(missedTasks)
-                {
-                    loadMissedTasks();
-                    item.setTitle(getString(R.string.show_all_tasks));
-                }
-                else
-                {
+                if(missedTasks) {
                     loadAllTaskByDate();
-                    item.setTitle(getString(R.string.show_missed_tasks));
+                    //item.setTitle(getString(R.string.show_missed_tasks));
+                }
+                else {
+                    loadMissedTasks();
+                    //item.setTitle(getString(R.string.show_all_tasks));
                 }
                 missedTasks = !missedTasks;
+                getActivity().invalidateOptionsMenu();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
